@@ -1,6 +1,7 @@
 name: sinclair
-role: Executive Assistant & Scheduling
-runtime: openclaw
+role: Executive Assistant (EA)
+runtime: hermes-agent
+soul: /etc/flavoros/SOUL.md
 context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
 
 models:
@@ -15,18 +16,27 @@ models:
     - skill: draft-email        → thinking
     - skill: schedule-decision  → thinking
     - skill: meeting-prep       → thinking
+    - skill: morning-vitals     → crawl
+    - skill: calendar-load-check → crawl
+    - skill: perma-v-checkin    → thinking
+    - skill: journal-sentiment-scan → thinking
 
 skills_mounted:
   - executive-assistant
-  - skills:
-      - inbox-sweep
-      - draft-email
-      - schedule-meeting
-      - calendar-lookahead
-      - meeting-prep
-      - reschedule
-      - decline-politely
-      - holding-reply
+  - wellness
+  - sinclair-voice
+  - obsidian-executive-assistant
+
+plugins:
+  obsidian:
+    enabled: true
+    bundles: [dataview, templater, tasks]
+  web:
+    enabled: true
+
+obsidian:
+  primary_folders: ["20-Meetings", "35-Reports", "60-Wellness", "80-Journal", "90-Archive"]
+  templates: ["20-Meetings/_templates/prep.md", "35-Reports/_templates/agent-report.md", "60-Wellness/_templates/perma-v-checkin.md"]
 
 bus:
   subscribes: [work_order.sinclair]
@@ -34,7 +44,7 @@ bus:
 
 vault:
   read:  ["**"]
-  write: ["20-Meetings/**", "35-Reports/**"]
+  write: ["20-Meetings/**", "35-Reports/**", "60-Wellness/**"]
 
 composio:
   read:  [email_biz_a, email_biz_b, email_personal, cal_biz_a, cal_biz_b, cal_personal]
@@ -43,3 +53,23 @@ composio:
 hitl:
   always_drafts_for_approval: [send_email, accept_meeting_external, reschedule_external]
   acts_autonomously: [archive, label, mark_read, accept_recurring, decline_obvious_spam]
+
+human_interface:
+  channel: telegram
+  exclusive: false
+  user_id_secret: /run/flavor/secrets/sinclair/telegram.user
+  bot_token_secret: /run/flavor/secrets/sinclair/telegram.token
+  inbound:
+    text: enabled
+    voice:
+      enabled: true
+      transcription: openai_whisper
+      forward_transcript_as_text: true
+  outbound:
+    text: enabled
+    voice:
+      enabled: true
+      provider: elevenlabs
+      config: /etc/flavoros/sinclair-voice.yaml
+      api_key_secret: /run/flavor/secrets/sinclair/elevenlabs.key
+      voice_id_secret: /run/flavor/secrets/sinclair/elevenlabs.voice_id

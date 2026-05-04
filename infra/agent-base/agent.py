@@ -58,6 +58,12 @@ def build_system_prompt(cfg: dict, skills: dict[str, str], skill_name: str | Non
 
     parts.append(f"You are {cfg['name']}, role: {cfg['role']}.")
 
+    soul_path = cfg.get("soul", "")
+    if soul_path:
+        soul = load_context_file(soul_path)
+        if soul:
+            parts.append(soul)
+
     context_path = cfg.get("context", "")
     if context_path:
         ctx = load_context_file(context_path)

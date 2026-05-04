@@ -48,7 +48,7 @@ operational_mode: Standard
 ---
 
 ## Wellness
-<!-- Dr. Watson's flags -->
+<!-- Sinclair's wellness flags -->
 
 - **Status:**
 - **Flags:**

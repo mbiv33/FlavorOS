@@ -1,6 +1,7 @@
 name: maxine
-role: Project Management & Growth
+role: Chief Operating Officer (COO)
 runtime: openclaw
+soul: /etc/flavoros/SOUL.md
 context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
 
 models:
@@ -15,17 +16,29 @@ models:
     - skill: prioritization          → thinking
     - skill: goal-alignment          → thinking
     - skill: project-status-roundup  → thinking
+    - skill: finance-pulse           → thinking
+    - skill: overhead-audit          → thinking
+    - skill: invoice-tracker         → report
+    - skill: expense-anomaly-scan    → report
+    - skill: bill-radar              → report
+    - skill: subscription-audit      → thinking
+    - skill: domain-renewal-scan     → report
 
 skills_mounted:
   - daily-task-manager
   - daily-task-prep
-  - skills:
-      - milestone-risk-scan
-      - project-status-roundup
-      - prioritization
-      - goal-alignment
-      - kpi-rollup
-      - contract-deadline-watch
+  - financial-management
+  - infrastructure-ops
+  - obsidian-operations
+
+plugins:
+  obsidian:
+    enabled: true
+    bundles: [dataview, templater, tasks]
+
+obsidian:
+  primary_folders: ["20-Meetings", "30-Projects", "35-Reports", "70-Ops", "90-Archive"]
+  templates: ["30-Projects/_templates/project.md", "35-Reports/_templates/project-status.md", "70-Ops/_templates/audit.md"]
 
 bus:
   subscribes: [work_order.maxine]
@@ -36,5 +49,8 @@ vault:
   write: ["30-Projects/**", "35-Reports/**", "20-Meetings/**"]
 
 composio:
-  read:  [pm_biz_a, pm_biz_b, cal_biz_a, cal_biz_b]
+  read:  [pm_biz_a, pm_biz_b, cal_biz_a, cal_biz_b, bank_biz_a, bank_biz_b, bank_personal, cards, books, email_personal]
   write: [pm_biz_a, pm_biz_b]
+
+hitl:
+  always_escalates: [any_payment, any_invoice_dispute, contract_terms, new_subscription_commitment]

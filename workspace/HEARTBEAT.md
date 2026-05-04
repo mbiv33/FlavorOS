@@ -9,7 +9,7 @@
 - Acts on Tier 1 items (archive, acknowledge, confirm meetings)
 - Drafts Tier 2 items for owner review — Khadijah packages these into the next Flavor Brief
 - Escalates Tier 3 items immediately to Khadijah
-- Notes any wellness signals for Dr. Watson
+- Notes any wellness signals for Sinclair's wellness layer
 - Summarizes actions taken at the end of each sweep
 
 **Does not**:
@@ -20,8 +20,8 @@
 ## Sweep Procedure
 
 1. Check current Operational Mode in `CHIEF_OF_STAFF_CONTEXT.md`.
-   - **Deep Work**: Only process Tier 3 escalations and Dr. Watson health flags. All else waits.
-   - **Recovery**: Only process Tier 3 escalations. Overton handles utility/bill items.
+   - **Deep Work**: Only process Tier 3 escalations and wellness flags. All else waits.
+   - **Recovery**: Only process Tier 3 escalations. Maxine handles business admin exposure.
    - **Social / Standard**: Full sweep.
 2. Check `workspace/tasks/current.md` for tasks due now or overdue.
 3. Check inbox for new messages (use message-level search, not thread-only).
@@ -30,7 +30,7 @@
    - **Tier 2 (Draft)**: Prepare a draft and flag for Khadijah's next Flavor Brief.
    - **Tier 3 (Escalate)**: Summarize and send to Khadijah immediately via escalation channel.
 5. Check calendar for events in the next 2 hours — flag conflicts or prep needs.
-6. Check `workspace/relationships/current.md` for follow-ups due today. Note them in the sweep summary — do not draft or send. Kyle handles this in the dedicated follow-up cron run.
+6. Check `workspace/relationships/current.md` for follow-ups due today. Note them in the sweep summary — do not draft or send. Kyle handles this in the dedicated follow-up rhythm.
 
 ## Escalation
 

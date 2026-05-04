@@ -2,7 +2,7 @@
 type: perma-v-checkin
 date: {{date:YYYY-MM-DD}}
 day: {{date:dddd}}
-generated_by: watson
+generated_by: sinclair
 week: {{date:W}}
 ---
 
@@ -81,8 +81,8 @@ week: {{date:W}}
 
 ---
 
-## Watson's Flags
-<!-- Filled by Dr. Watson if any dimension is ≤5 -->
+## Wellness Flags
+<!-- Filled by Sinclair if any dimension is ≤5 -->
 
 - **Alert:**
 - **Recommendation for Khadijah:**

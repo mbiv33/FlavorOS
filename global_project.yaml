@@ -10,23 +10,23 @@ conductor: Khadijah
 # Resource Allocation
 team:
   - Sinclair (EA)
-  - Kyle (Finance)
-  - Overton (Infrastructure)
+  - Maxine (COO)
+  - Kyle (CRO)
+  - Scooter (CLO)
 
 # Timeline
 start_date: 2026-05-04
 due_date: 2026-05-18
 milestones:
-  - Phase 1: Research [due: 2026-05-07]
-  - Phase 2: Execution [due: 2026-05-14]
+  - "Phase 1: Research [due: 2026-05-07]"
+  - "Phase 2: Execution [due: 2026-05-14]"
 
 # Logic & Dependencies
 dependencies: 
-  - [[Note_Name_of_Prerequisite]]
+  - "[[Note_Name_of_Prerequisite]]"
 blockers: []
 
 # Wellness & Context
 energy_required: High
 perma_v_impact: Achievement
-mood_check: 
----
+mood_check: ""

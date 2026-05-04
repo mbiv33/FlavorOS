@@ -29,13 +29,7 @@ Verify they're detected by starting a Hermes session and checking the skill list
 
 ## Step 3: Set Up the Context File
 
-Copy the template to your project root:
-
-```bash
-cp templates/CHIEF_OF_STAFF_CONTEXT.example.md ~/your-project/CHIEF_OF_STAFF_CONTEXT.md
-```
-
-Open it and fill in every section:
+Create `CHIEF_OF_STAFF_CONTEXT.md` in your project root and fill in every section:
 
 - **About You**: Name, timezone, role
 - **Communication**: Email accounts, calendar accounts, tone preference
@@ -61,19 +55,9 @@ This creates:
 
 ## Step 5: Set Up Personality (Optional)
 
-Copy the SOUL template for the CoS personality:
+Use `agents/khadijah/SOUL.md` as the starting point for Khadijah's voice and persona.
 
-```bash
-cp templates/SOUL.example.md ~/.hermes/SOUL.md
-```
-
-Copy the USER template for your profile:
-
-```bash
-cp templates/USER.example.md ~/.hermes/memories/USER.md
-```
-
-Edit both to match your preferences.
+Create `~/.hermes/memories/USER.md` manually with your profile, communication preferences, scheduling preferences, and current focus.
 
 ## Step 6: Configure MCP Integrations
 
@@ -153,7 +137,7 @@ For all options, see [docs/maturity-levels.md](docs/maturity-levels.md):
 - **Level 2 (Founder)**: Full Steps 2-6, all cron jobs except morning briefing
 - **Level 3 (Full CoS)**: Everything above
 
-A filled-out demo context file is available at [templates/CHIEF_OF_STAFF_CONTEXT.demo.md](templates/CHIEF_OF_STAFF_CONTEXT.demo.md) to see what a completed setup looks like.
+A filled-out context file is no longer scaffolded; create the file directly in your project root.
 
 ## Troubleshooting
 

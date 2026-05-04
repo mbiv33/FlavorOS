@@ -1,6 +1,7 @@
 name: kyle
-role: Finance & Client Relations
+role: Chief Relationship Officer (CRO)
 runtime: openclaw
+soul: /etc/flavoros/SOUL.md
 
 models:
   primary:  openai/gpt-5-mini
@@ -8,15 +9,17 @@ models:
 
 skills_mounted:
   - relationship-manager
-  - skills:
-      - followup-cadence
-      - vip-health-check
-      - finance-pulse
-      - overhead-audit
-      - invoice-tracker
-      - expense-anomaly-scan
-      - pipeline-rollup
-      - win-logger
+  - brand-social
+  - obsidian-relationships
+
+plugins:
+  obsidian:
+    enabled: true
+    bundles: [dataview, templater, tasks]
+
+obsidian:
+  primary_folders: ["35-Reports", "40-People", "90-Archive"]
+  templates: ["35-Reports/_templates/agent-report.md", "40-People/_templates/contact.md"]
 
 bus:
   subscribes: [work_order.kyle]
@@ -27,8 +30,8 @@ vault:
   write: ["40-People/**", "35-Reports/**"]
 
 composio:
-  read:  [email_biz_a, email_biz_b, bank_biz_a, bank_biz_b, bank_personal, cards, books, crm_biz_a, crm_biz_b]
+  read:  [email_biz_a, email_biz_b, email_personal, crm_biz_a, crm_biz_b, social_li, social_x]
   write: [crm_biz_a, crm_biz_b]   # CRM updates only — never finance
 
 hitl:
-  always_escalates: [any_payment, any_invoice_dispute, contract_terms]
+  always_escalates: [public_statement, partnership_terms, contract_terms]

@@ -2,7 +2,7 @@
 type: agent-report
 date: {{date:YYYY-MM-DD}}
 report_type:     # weekly-summary | pipeline-rollup | finance-pulse | relationship-health | kpi-rollup | win-log
-generated_by:    # maxine | kyle | sinclair | watson | overton | regine | scooter
+generated_by:    # maxine | kyle | sinclair | scooter
 period:          # Daily | Weekly | Monthly | Quarterly
 status: Draft    # Draft | Delivered | Archived
 ---

@@ -85,24 +85,24 @@ schedules:
 
   - id: weekly_finance_pulse
     cron: "0 8 * * 1"
-    agent: kyle
+    agent: maxine
     skill: finance-pulse
 
   - id: monthly_overhead_audit
     cron: "0 9 1 * *"
-    agent: kyle
+    agent: maxine
     skill: overhead-audit
 
-  # ── Regine (brand + social) ───────────────────────────────────────
+  # ── Kyle (brand + social) ────────────────────────────────────────
   - id: network_pulse
     cron: "0 11 * * 1,4"
-    agent: regine
+    agent: kyle
     skill: network-pulse
     notes: Mon/Thu — gaps, warm intros, going-cold VIPs
 
   - id: event_lookahead
     cron: "0 16 * * 0"
-    agent: regine
+    agent: kyle
     skill: event-lookahead
     notes: Sunday — preview events for the week
 
@@ -119,47 +119,47 @@ schedules:
     skill: pre-trip-check
     notes: Fires only if travel within 72h
 
-  # ── Watson (wellness) ─────────────────────────────────────────────
+  # ── Sinclair (wellness) ───────────────────────────────────────────
   - id: morning_vitals
     cron: "30 7 * * *"
-    agent: watson
+    agent: sinclair
     skill: morning-vitals
 
   - id: calendar_load_check
     cron: "0 16 * * 0-4"
-    agent: watson
+    agent: sinclair
     skill: calendar-load-check
     notes: Looks at tomorrow; flags overload to Khadijah
 
   - id: weekly_perma_v
     cron: "0 17 * * 0"
-    agent: watson
+    agent: sinclair
     skill: perma-v-checkin
 
   - id: journal_sentiment
     cron: "0 23 * * *"
-    agent: watson
+    agent: sinclair
     skill: journal-sentiment-scan
     notes: Read-only scan of vault/80-Journal/
 
-  # ── Overton (infrastructure) ──────────────────────────────────────
+  # ── Maxine / Scooter (ops + tech) ─────────────────────────────────
   - id: bill_radar
     cron: "0 6 * * *"
-    agent: overton
+    agent: maxine
     skill: bill-radar
     notes: Daily — upcoming due-dates within 7 days
 
   - id: subscription_audit
     cron: "0 9 1 * *"
-    agent: overton
+    agent: maxine
     skill: subscription-audit
 
   - id: tech_health
     cron: "0 4 * * 0"
-    agent: overton
+    agent: scooter
     skill: tech-health-check
 
   - id: domain_renewal_scan
     cron: "0 5 1 * *"
-    agent: overton
+    agent: maxine
     skill: domain-renewal-scan

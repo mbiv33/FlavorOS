@@ -20,7 +20,7 @@ Skip `chief-of-staff` for now — it adds morning briefings and EOD reviews, whi
 Copy the template:
 
 ```bash
-cp templates/CHIEF_OF_STAFF_CONTEXT.example.md ~/your-project/CHIEF_OF_STAFF_CONTEXT.md
+touch ~/your-project/CHIEF_OF_STAFF_CONTEXT.md
 ```
 
 The fields that matter most for getting started:
@@ -31,7 +31,7 @@ The fields that matter most for getting started:
 - **Authority rules** (what the assistant can handle vs. what needs your approval)
 - **Escalation channel** (where urgent items go — Telegram DM, Slack, etc.)
 
-Everything else can be filled in later. See [templates/CHIEF_OF_STAFF_CONTEXT.demo.md](../templates/CHIEF_OF_STAFF_CONTEXT.demo.md) for a filled-out example.
+Everything else can be filled in later. Create the context file directly in your project root.
 
 ## Copy Workspace Files
 

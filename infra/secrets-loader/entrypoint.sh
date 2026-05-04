@@ -35,7 +35,7 @@ echo "$PLAIN" | yq -r '.openrouter.api_key' > "$shared_dir/openrouter.key"
 chmod 0400 "$shared_dir/openrouter.key"
 
 # ── Per-agent: filter Composio connection_ids by grants ──────────
-agents=(khadijah sinclair maxine kyle regine scooter watson overton)
+agents=(khadijah sinclair maxine scooter kyle)
 
 for agent in "${agents[@]}"; do
   d="$OUT_DIR/$agent"
@@ -67,15 +67,19 @@ for agent in "${agents[@]}"; do
     chmod 0400 "$d/overrides.json"
   fi
 
-  # Khadijah-only: Telegram, ElevenLabs voice, Whisper STT, workspace key
-  if [[ "$agent" == "khadijah" ]]; then
-    echo "$PLAIN" | yq -r '.telegram.bot_token'         > "$d/telegram.token"
+  # Human-facing Hermes agents: Telegram, ElevenLabs voice, Whisper STT
+  if [[ "$agent" == "khadijah" || "$agent" == "sinclair" ]]; then
+    echo "$PLAIN" | yq -r ".telegram.${agent}_bot_token // .telegram.bot_token // \"\"" > "$d/telegram.token"
     echo "$PLAIN" | yq -r '.telegram.user_id'           > "$d/telegram.user"
-    echo "$PLAIN" | yq -r '.composio.workspace_api_key' > "$d/composio.key"
+    echo "$PLAIN" | yq -r ".elevenlabs.${agent}_voice_id // .elevenlabs.voice_id // \"\"" > "$d/elevenlabs.voice_id"
     echo "$PLAIN" | yq -r '.elevenlabs.api_key'         > "$d/elevenlabs.key"
-    echo "$PLAIN" | yq -r '.elevenlabs.voice_id'        > "$d/elevenlabs.voice_id"
     echo "$PLAIN" | yq -r '.openai.api_key'             > "$d/openai_whisper.key"
-    chmod 0400 "$d"/{telegram.token,telegram.user,composio.key,elevenlabs.key,elevenlabs.voice_id,openai_whisper.key}
+    chmod 0400 "$d"/{telegram.token,telegram.user,elevenlabs.key,elevenlabs.voice_id,openai_whisper.key}
+  fi
+
+  if [[ "$agent" == "khadijah" ]]; then
+    echo "$PLAIN" | yq -r '.composio.workspace_api_key' > "$d/composio.key"
+    chmod 0400 "$d/composio.key"
   fi
 
   count=$(ls -1 "$d" | wc -l)

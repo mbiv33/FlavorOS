@@ -1,7 +1,7 @@
 name: khadijah
-role: Chief of Staff & Conductor
+role: Chief of Staff (COS)
 runtime: hermes-agent
-soul: /skills/SOUL.md
+soul: /etc/flavoros/SOUL.md
 context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
 
 models:
@@ -10,8 +10,17 @@ models:
 
 skills_mounted:
   - chief-of-staff
-  - khadijah-voice          # TTS delivery via ElevenLabs
-  # Khadijah does not run specialist skills herself — she dispatches.
+  - khadijah-voice
+  - obsidian-chief-of-staff
+
+plugins:
+  obsidian:
+    enabled: true
+    bundles: [dataview, templater, tasks]
+
+obsidian:
+  primary_folders: ["00-Inbox", "10-Briefs", "35-Reports", "90-Archive"]
+  templates: ["10-Briefs/_templates/flavor-brief.md", "35-Reports/_templates/agent-report.md"]
 
 bus:
   publishes: [work_order.*, flag.*, audit.*]
@@ -26,11 +35,10 @@ composio:
   write: [comms]
 
 # ── Human interface ────────────────────────────────────────────────
-# Khadijah is the SOLE human-facing agent. All other agents are dark
-# from the user's perspective; Khadijah relays everything they need to know.
+# Khadijah is one of the two human-facing Hermes agents.
 human_interface:
   channel: telegram
-  exclusive: true                       # No other agent may publish to the user
+  exclusive: false
   user_id_secret: /run/flavor/secrets/khadijah/telegram.user
   bot_token_secret: /run/flavor/secrets/khadijah/telegram.token
   webhook: https://${KHADIJAH_DOMAIN}/telegram

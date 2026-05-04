@@ -1,5 +1,4 @@
 # Khadijah's voice — ElevenLabs TTS for Telegram voice messages.
-# Only Khadijah uses this. Other agents have no voice surface.
 
 provider: elevenlabs
 

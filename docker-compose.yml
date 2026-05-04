@@ -119,15 +119,16 @@ services:
     container_name: khadijah
     environment:
       AGENT_NAME: khadijah
-      AGENT_ROLE: conductor
+      AGENT_ROLE: chief-of-staff
       KHADIJAH_DOMAIN: ${KHADIJAH_DOMAIN}
     volumes:
       - ./vault:/vault
       - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./agents/khadijah/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/khadijah/agent.yaml:/etc/flavoros/agent.yaml:ro
       - ./infra/voice.yaml:/etc/flavoros/voice.yaml:ro
-      - ./skills:/skills:ro
+      - ./agents/khadijah/skills:/skills:ro
       - secrets-tmpfs:/run/flavor/secrets:ro
 
   sinclair:
@@ -139,78 +140,49 @@ services:
     volumes:
       - ./vault:/vault
       - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./agents/sinclair/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/sinclair/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./skills/executive-assistant:/skills/executive-assistant:ro
+      - ./infra/sinclair-voice.yaml:/etc/flavoros/sinclair-voice.yaml:ro
+      - ./agents/sinclair/skills:/skills:ro
 
   maxine:
     <<: *agent-base
     container_name: maxine
     environment:
       AGENT_NAME: maxine
-      AGENT_ROLE: project-manager
+      AGENT_ROLE: chief-operating-officer
     volumes:
       - ./vault:/vault
       - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./agents/maxine/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/maxine/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./skills/daily-task-manager:/skills/daily-task-manager:ro
-      - ./skills/daily-task-prep:/skills/daily-task-prep:ro
+      - ./agents/maxine/skills:/skills:ro
 
   kyle:
     <<: *agent-base
     container_name: kyle
-    environment: { AGENT_NAME: kyle, AGENT_ROLE: finance-crm }
+    environment: { AGENT_NAME: kyle, AGENT_ROLE: chief-relationship-officer }
     volumes:
       - ./vault:/vault
       - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./agents/kyle/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/kyle/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./skills/relationship-manager:/skills/relationship-manager:ro
-
-  regine:
-    <<: *agent-base
-    container_name: regine
-    environment: { AGENT_NAME: regine, AGENT_ROLE: brand-social }
-    volumes:
-      - ./vault:/vault
-      - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
-      - ./workspace:/workspace
-      - ./agents/regine/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./skills/brand-social:/skills/brand-social:ro
+      - ./agents/kyle/skills:/skills:ro
 
   scooter:
     <<: *agent-base
     container_name: scooter
-    environment: { AGENT_NAME: scooter, AGENT_ROLE: travel-logistics }
+    environment: { AGENT_NAME: scooter, AGENT_ROLE: chief-logistics-officer }
     volumes:
       - ./vault:/vault
       - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./agents/scooter/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/scooter/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./skills/travel-logistics:/skills/travel-logistics:ro
-
-  watson:
-    <<: *agent-base
-    container_name: watson
-    environment: { AGENT_NAME: watson, AGENT_ROLE: wellness }
-    volumes:
-      - ./vault:/vault
-      - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
-      - ./workspace:/workspace
-      - ./agents/watson/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./skills/wellness:/skills/wellness:ro
-
-  overton:
-    <<: *agent-base
-    container_name: overton
-    environment: { AGENT_NAME: overton, AGENT_ROLE: infrastructure-ops }
-    volumes:
-      - ./vault:/vault
-      - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
-      - ./workspace:/workspace
-      - ./agents/overton/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./skills/infrastructure-ops:/skills/infrastructure-ops:ro
+      - ./agents/scooter/skills:/skills:ro
 
 volumes:
   redis-data:

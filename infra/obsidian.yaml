@@ -13,15 +13,15 @@ sync:
 folders:
   "00-Inbox":     { writers: [khadijah], purpose: "Captures, raw notes" }
   "10-Briefs":    { writers: [khadijah], purpose: "Daily Flavor Briefs" }
-  "20-Meetings":  { writers: [sinclair, maxine], purpose: "Pre-meeting prep + post notes" }
+  "20-Meetings":  { writers: [sinclair, maxine, scooter], purpose: "Pre-meeting prep, briefings, and coordination notes" }
   "30-Projects":  { writers: [maxine], purpose: "Active projects" }
-  "35-Reports":   { writers: [maxine, kyle, sinclair, watson, overton, regine, scooter], purpose: "Agent-generated reports: project status, pipeline, weekly summaries, KPI rollups" }
-  "40-People":    { writers: [kyle, regine], purpose: "Per-contact CRM pages" }
+  "35-Reports":   { writers: [maxine, kyle, sinclair, scooter], purpose: "Agent-generated reports: project status, pipeline, wellness, logistics, and KPI rollups" }
+  "40-People":    { writers: [kyle], purpose: "Per-contact CRM pages" }
   "50-Travel":    { writers: [scooter], purpose: "Per-trip pages" }
-  "60-Wellness":  { writers: [watson], purpose: "PERMA-V journal, biometrics" }
-  "70-Ops":       { writers: [overton], purpose: "Bill audits, tech inventory" }
-  "80-Journal":   { writers: [], readers: [watson], purpose: "User's journal — agents read for sentiment only" }
-  "90-Archive":   { writers: [khadijah, sinclair, maxine, kyle, regine, scooter, watson, overton] }
+  "60-Wellness":  { writers: [sinclair], purpose: "PERMA-V journal, biometrics" }
+  "70-Ops":       { writers: [maxine, scooter], purpose: "Bill audits, tech inventory, vendor logs" }
+  "80-Journal":   { writers: [], readers: [sinclair], purpose: "User's journal — agents read for sentiment only" }
+  "90-Archive":   { writers: [khadijah, sinclair, maxine, kyle, scooter] }
 
 templates:
   daily_brief:    "10-Briefs/_templates/flavor-brief.md"
