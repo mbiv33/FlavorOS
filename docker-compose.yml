@@ -1,7 +1,6 @@
-version: "3.9"
-
 x-agent-base: &agent-base
   restart: unless-stopped
+  build: ./infra/agent-base
   environment:
     NATS_URL: nats://nats:4222
     REDIS_URL: redis://redis:6379
@@ -13,7 +12,7 @@ x-agent-base: &agent-base
     - ./vault:/vault
     - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
     - ./workspace:/workspace
-    - secrets-tmpfs:/run/flavor/secrets:ro    # decrypted secrets (in-memory)
+    - secrets-tmpfs:/run/flavor/secrets:ro
   depends_on:
     nats:              { condition: service_started }
     redis:             { condition: service_started }
@@ -46,25 +45,14 @@ services:
     networks: [flavor]
     restart: unless-stopped
 
-  caddy:
-    image: caddy:2-alpine
-    ports: ["80:80", "443:443"]
-    volumes:
-      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-    networks: [flavor]
-    restart: unless-stopped
-
   secrets-loader:
     build: ./infra/secrets-loader
     container_name: secrets-loader
     volumes:
-      - /etc/flavoros/age.key:/etc/flavoros/age.key:ro      # Layer 0 (host-only)
-      - ./infra/secrets:/secrets:ro                          # Layer 1 (encrypted, git)
+      - /etc/flavoros/age.key:/etc/flavoros/age.key:ro
+      - ./infra/secrets:/secrets:ro
       - ./infra/composio.yaml:/secrets/composio.yaml:ro
-      - secrets-tmpfs:/run/flavor/secrets                    # Layer 2 (tmpfs)
-    tmpfs:
-      - /run/flavor/secrets:size=16m,mode=0700
+      - secrets-tmpfs:/run/flavor/secrets
     healthcheck:
       test: ["CMD", "test", "-f", "/run/flavor/secrets/_shared/openrouter.key"]
       interval: 5s
@@ -88,12 +76,12 @@ services:
 
   composio-init:
     build: ./infra/composio-init
-    profiles: ["init"]                                       # only runs on `compose run --rm composio-init`
+    profiles: ["init"]
     environment:
       COMPOSIO_API_KEY_FILE: /run/flavor/secrets/khadijah/composio.key
     volumes:
       - ./infra/composio.yaml:/etc/flavoros/composio.yaml:ro
-      - ./infra/secrets:/secrets:rw                          # writes connection_ids back
+      - ./infra/secrets:/secrets:rw
       - secrets-tmpfs:/run/flavor/secrets:ro
     depends_on:
       secrets-loader: { condition: service_healthy }
@@ -109,6 +97,7 @@ services:
     volumes:
       - ./vault:/vault
       - ./infra/vault-sync.sh:/scripts/sync.sh:ro
+    networks: [flavor]
     restart: unless-stopped
 
   scheduler:
@@ -125,14 +114,11 @@ services:
   # ── Agents ────────────────────────────────────────────────────────
   khadijah:
     <<: *agent-base
-    build: ./agents/khadijah
     container_name: khadijah
     environment:
       AGENT_NAME: khadijah
       AGENT_ROLE: conductor
       KHADIJAH_DOMAIN: ${KHADIJAH_DOMAIN}
-      # Secrets are read from files in /run/flavor/secrets/khadijah/
-      # NOT from environment variables (avoids leaking via docker inspect).
     volumes:
       - ./vault:/vault
       - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
@@ -144,7 +130,6 @@ services:
 
   sinclair:
     <<: *agent-base
-    build: ./agents/sinclair
     container_name: sinclair
     environment:
       AGENT_NAME: sinclair
@@ -158,7 +143,6 @@ services:
 
   maxine:
     <<: *agent-base
-    build: ./agents/maxine
     container_name: maxine
     environment:
       AGENT_NAME: maxine
@@ -173,7 +157,6 @@ services:
 
   kyle:
     <<: *agent-base
-    build: ./agents/kyle
     container_name: kyle
     environment: { AGENT_NAME: kyle, AGENT_ROLE: finance-crm }
     volumes:
@@ -185,7 +168,6 @@ services:
 
   regine:
     <<: *agent-base
-    build: ./agents/regine
     container_name: regine
     environment: { AGENT_NAME: regine, AGENT_ROLE: brand-social }
     volumes:
@@ -197,7 +179,6 @@ services:
 
   scooter:
     <<: *agent-base
-    build: ./agents/scooter
     container_name: scooter
     environment: { AGENT_NAME: scooter, AGENT_ROLE: travel-logistics }
     volumes:
@@ -209,7 +190,6 @@ services:
 
   watson:
     <<: *agent-base
-    build: ./agents/watson
     container_name: watson
     environment: { AGENT_NAME: watson, AGENT_ROLE: wellness }
     volumes:
@@ -221,7 +201,6 @@ services:
 
   overton:
     <<: *agent-base
-    build: ./agents/overton
     container_name: overton
     environment: { AGENT_NAME: overton, AGENT_ROLE: infrastructure-ops }
     volumes:
@@ -234,7 +213,6 @@ services:
 volumes:
   redis-data:
   pg-data:
-  caddy-data:
   secrets-tmpfs:
     driver: local
     driver_opts:

@@ -1,9 +1,3 @@
-FROM ghcr.io/openclaw/agent:latest
+FROM flavoros-agent-base:latest
 
-WORKDIR /app
-
-ENV AGENT_CONFIG=/etc/flavoros/agent.yaml \
-    SKILLS_DIR=/skills \
-    LOG_LEVEL=info
-
-CMD ["openclaw", "run", "--config", "/etc/flavoros/agent.yaml"]
+COPY agent.yaml /etc/flavoros/agent.yaml
