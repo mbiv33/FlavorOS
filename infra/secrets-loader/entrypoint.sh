@@ -61,7 +61,7 @@ for agent in "${agents[@]}"; do
   ln -sf "$shared_dir/openrouter.key" "$d/openrouter.key"
 
   # Agent-specific overrides
-  override=$(echo "$PLAIN" | yq -r ".agent_overrides.$agent // {}" -o=json)
+  override=$(echo "$PLAIN" | yq -c ".agent_overrides.$agent // {}")
   if [[ "$override" != "{}" && "$override" != "null" ]]; then
     echo "$override" > "$d/overrides.json"
     chmod 0400 "$d/overrides.json"
