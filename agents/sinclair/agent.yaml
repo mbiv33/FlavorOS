@@ -1,0 +1,45 @@
+name: sinclair
+role: Executive Assistant & Scheduling
+runtime: openclaw
+context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
+
+models:
+  profiles:
+    thinking: anthropic/claude-sonnet-4.6
+    crawl:    anthropic/claude-haiku-4.5
+  endpoint: ${OPENROUTER_BASE_URL}
+  routing_rules:
+    - skill: inbox-sweep        → crawl
+    - skill: label-message      → crawl
+    - skill: archive-decision   → crawl
+    - skill: draft-email        → thinking
+    - skill: schedule-decision  → thinking
+    - skill: meeting-prep       → thinking
+
+skills_mounted:
+  - executive-assistant
+  - skills:
+      - inbox-sweep
+      - draft-email
+      - schedule-meeting
+      - calendar-lookahead
+      - meeting-prep
+      - reschedule
+      - decline-politely
+      - holding-reply
+
+bus:
+  subscribes: [work_order.sinclair]
+  publishes:  [report.sinclair, flag.*]
+
+vault:
+  read:  ["**"]
+  write: ["20-Meetings/**", "35-Reports/**"]
+
+composio:
+  read:  [email_biz_a, email_biz_b, email_personal, cal_biz_a, cal_biz_b, cal_personal]
+  write: [email_biz_a, email_biz_b, email_personal, cal_biz_a, cal_biz_b, cal_personal]
+
+hitl:
+  always_drafts_for_approval: [send_email, accept_meeting_external, reschedule_external]
+  acts_autonomously: [archive, label, mark_read, accept_recurring, decline_obvious_spam]

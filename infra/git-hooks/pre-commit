@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Block commits that contain plaintext secrets.
+# Install: ln -sf ../../infra/git-hooks/pre-commit .git/hooks/pre-commit
+
+set -e
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+fail=0
+
+# 1. Reject any plaintext file matching infra/secrets/*.yaml that is NOT .enc.yaml or .example.yaml
+for f in $staged; do
+  case "$f" in
+    infra/secrets/*.yaml)
+      case "$f" in
+        *.enc.yaml|*.example.yaml) ;;
+        *) echo "✗ refusing to commit plaintext secret: $f"; fail=1 ;;
+      esac
+      ;;
+    age.key|*.age.key)
+      echo "✗ refusing to commit age private key: $f"; fail=1 ;;
+    .env|.env.local)
+      echo "✗ refusing to commit env file: $f"; fail=1 ;;
+  esac
+done
+
+# 2. Scan staged diffs for high-confidence secret patterns
+patterns=(
+  'sk-or-[A-Za-z0-9]{20,}'           # OpenRouter
+  'sk-[A-Za-z0-9]{32,}'              # OpenAI
+  'sk-ant-[A-Za-z0-9_-]{20,}'        # Anthropic
+  'composio_[A-Za-z0-9]{20,}'
+  '[0-9]{8,12}:[A-Za-z0-9_-]{30,}'   # Telegram bot token
+  '-----BEGIN [A-Z ]*PRIVATE KEY-----'
+  'AGE-SECRET-KEY-1[A-Z0-9]+'
+)
+for p in "${patterns[@]}"; do
+  if git diff --cached -U0 | grep -E "$p" >/dev/null; then
+    echo "✗ staged diff contains secret-shaped value matching: $p"
+    fail=1
+  fi
+done
+
+[[ $fail -eq 0 ]] || { echo; echo "Commit blocked. Encrypt with SOPS or remove."; exit 1; }

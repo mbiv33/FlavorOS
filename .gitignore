@@ -1,0 +1,25 @@
+# Plaintext secrets — never commit
+infra/secrets/secrets.yaml
+infra/secrets/*.plain.yaml
+infra/secrets/agents/*.yaml
+!infra/secrets/secrets.example.yaml
+
+# age private key — never commit
+*.age.key
+age.key
+
+# Local env (we use SOPS instead, but keep this defensive)
+.env
+.env.local
+
+# Decrypted runtime
+/run/flavor/
+
+# Vault local cache
+/vault/.obsidian/workspace*
+
+# Build artifacts
+**/__pycache__/
+*.pyc
+node_modules/
+dist/

@@ -1,0 +1,32 @@
+---
+id: PROJ-2026-001
+title: "Project Name"
+status: 🟢 Active  # Options: 🟢 Active, 🟡 On Hold, 🔴 Blocked, ✅ Completed
+priority: P1       # Options: P1 (High), P2 (Medium), P3 (Low)
+type: Structured   # Options: Structured, Organic, Instant
+architect: Maxine
+conductor: Khadijah
+
+# Resource Allocation
+team:
+  - Sinclair (EA)
+  - Kyle (Finance)
+  - Overton (Infrastructure)
+
+# Timeline
+start_date: 2026-05-04
+due_date: 2026-05-18
+milestones:
+  - Phase 1: Research [due: 2026-05-07]
+  - Phase 2: Execution [due: 2026-05-14]
+
+# Logic & Dependencies
+dependencies: 
+  - [[Note_Name_of_Prerequisite]]
+blockers: []
+
+# Wellness & Context
+energy_required: High
+perma_v_impact: Achievement
+mood_check: 
+---

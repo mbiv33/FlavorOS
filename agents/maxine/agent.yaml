@@ -1,0 +1,40 @@
+name: maxine
+role: Project Management & Growth
+runtime: openclaw
+context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
+
+models:
+  profiles:
+    thinking: anthropic/claude-sonnet-4.6
+    report:   anthropic/claude-haiku-4.5
+  routing_rules:
+    - skill: daily-task-prep         → report
+    - skill: task-file-diff          → report
+    - skill: status-summary          → report
+    - skill: milestone-risk-scan     → thinking
+    - skill: prioritization          → thinking
+    - skill: goal-alignment          → thinking
+    - skill: project-status-roundup  → thinking
+
+skills_mounted:
+  - daily-task-manager
+  - daily-task-prep
+  - skills:
+      - milestone-risk-scan
+      - project-status-roundup
+      - prioritization
+      - goal-alignment
+      - kpi-rollup
+      - contract-deadline-watch
+
+bus:
+  subscribes: [work_order.maxine]
+  publishes:  [report.maxine, flag.*]
+
+vault:
+  read:  ["**"]
+  write: ["30-Projects/**", "35-Reports/**", "20-Meetings/**"]
+
+composio:
+  read:  [pm_biz_a, pm_biz_b, cal_biz_a, cal_biz_b]
+  write: [pm_biz_a, pm_biz_b]

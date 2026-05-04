@@ -1,0 +1,60 @@
+name: khadijah
+role: Chief of Staff & Conductor
+runtime: hermes-agent
+soul: /skills/SOUL.md
+context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
+
+models:
+  primary: anthropic/claude-sonnet-4.6
+  endpoint: ${OPENROUTER_BASE_URL}
+
+skills_mounted:
+  - chief-of-staff
+  - khadijah-voice          # TTS delivery via ElevenLabs
+  # Khadijah does not run specialist skills herself — she dispatches.
+
+bus:
+  publishes: [work_order.*, flag.*, audit.*]
+  subscribes: [report.*, health.*, flag.*]
+
+vault:
+  read: ["**"]
+  write: ["00-Inbox/**", "10-Briefs/**", "90-Archive/**"]
+
+composio:
+  read:  [comms]
+  write: [comms]
+
+# ── Human interface ────────────────────────────────────────────────
+# Khadijah is the SOLE human-facing agent. All other agents are dark
+# from the user's perspective; Khadijah relays everything they need to know.
+human_interface:
+  channel: telegram
+  exclusive: true                       # No other agent may publish to the user
+  user_id_secret: /run/flavor/secrets/khadijah/telegram.user
+  bot_token_secret: /run/flavor/secrets/khadijah/telegram.token
+  webhook: https://${KHADIJAH_DOMAIN}/telegram
+
+  # Inbound: user → Khadijah
+  inbound:
+    text: enabled
+    voice:
+      enabled: true
+      transcription: openai_whisper      # see infra/voice.yaml
+      forward_transcript_as_text: true   # treat voice as normal user text
+    other_modes: ignored                 # photos, documents → "noted, not actioned"
+
+  # Outbound: Khadijah → user
+  outbound:
+    text: enabled
+    voice:
+      enabled: true
+      provider: elevenlabs
+      config: /etc/flavoros/voice.yaml
+      api_key_secret: /run/flavor/secrets/khadijah/elevenlabs.key
+      voice_id_secret: /run/flavor/secrets/khadijah/elevenlabs.voice_id
+
+memory:
+  hot: redis://redis:6379
+  vector: postgres+pgvector
+  audit: postgres

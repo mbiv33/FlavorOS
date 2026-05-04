@@ -1,0 +1,35 @@
+# Obsidian vault layout, write permissions, and sync.
+
+mount:
+  read_only_path: /vault
+  read_write_path: /vault-rw   # only mounted into agents in `writers` below
+
+sync:
+  strategy: git              # or `livesync`
+  remote: ${OBSIDIAN_GIT_REMOTE}
+  interval_seconds: 60
+  conflict_resolution: prefer_remote_then_flag_to_khadijah
+
+folders:
+  "00-Inbox":     { writers: [khadijah], purpose: "Captures, raw notes" }
+  "10-Briefs":    { writers: [khadijah], purpose: "Daily Flavor Briefs" }
+  "20-Meetings":  { writers: [sinclair, maxine], purpose: "Pre-meeting prep + post notes" }
+  "30-Projects":  { writers: [maxine], purpose: "Active projects" }
+  "35-Reports":   { writers: [maxine, kyle, sinclair, watson, overton, regine, scooter], purpose: "Agent-generated reports: project status, pipeline, weekly summaries, KPI rollups" }
+  "40-People":    { writers: [kyle, regine], purpose: "Per-contact CRM pages" }
+  "50-Travel":    { writers: [scooter], purpose: "Per-trip pages" }
+  "60-Wellness":  { writers: [watson], purpose: "PERMA-V journal, biometrics" }
+  "70-Ops":       { writers: [overton], purpose: "Bill audits, tech inventory" }
+  "80-Journal":   { writers: [], readers: [watson], purpose: "User's journal — agents read for sentiment only" }
+  "90-Archive":   { writers: [khadijah, sinclair, maxine, kyle, regine, scooter, watson, overton] }
+
+templates:
+  daily_brief:    "10-Briefs/_templates/flavor-brief.md"
+  meeting_prep:   "20-Meetings/_templates/prep.md"
+  project_page:   "30-Projects/_templates/project.md"
+  agent_report:   "35-Reports/_templates/agent-report.md"
+  project_status: "35-Reports/_templates/project-status.md"
+  contact_page:   "40-People/_templates/contact.md"
+  trip_page:      "50-Travel/_templates/trip.md"
+  perma_v:        "60-Wellness/_templates/perma-v-checkin.md"
+  ops_audit:      "70-Ops/_templates/audit.md"
