@@ -176,6 +176,79 @@ async def handle_work_order(msg, cfg: dict, skills: dict[str, str], nc):
     log.info("published report to %s (%d chars)", report_subject, len(response))
 
 
+def read_secret(path: str) -> str:
+    try:
+        return Path(path).read_text().strip()
+    except FileNotFoundError:
+        return ""
+
+
+async def telegram_poll(cfg: dict, skills: dict[str, str], nc):
+    """Long-poll Telegram for messages and respond as the agent."""
+    hi = cfg.get("human_interface", {})
+    if hi.get("channel") != "telegram":
+        return
+
+    bot_token = read_secret(hi.get("bot_token_secret", ""))
+    user_id = read_secret(hi.get("user_id_secret", ""))
+
+    if not bot_token or not user_id or bot_token == "placeholder":
+        log.warning("telegram credentials missing or placeholder; skipping bot")
+        return
+
+    log.info("starting telegram bot for user %s", user_id)
+    api = f"https://api.telegram.org/bot{bot_token}"
+    offset = 0
+
+    async with httpx.AsyncClient(timeout=60) as client:
+        try:
+            await client.post(f"{api}/sendMessage", json={
+                "chat_id": int(user_id),
+                "text": f"{cfg['name'].title()} online. Ready when you are.",
+            })
+        except Exception as e:
+            log.error("telegram greeting failed: %s", e)
+
+        while True:
+            try:
+                resp = await client.get(f"{api}/getUpdates", params={
+                    "offset": offset,
+                    "timeout": 30,
+                })
+                data = resp.json()
+                for update in data.get("result", []):
+                    offset = update["update_id"] + 1
+                    msg = update.get("message", {})
+                    chat_id = msg.get("chat", {}).get("id")
+                    text = msg.get("text", "")
+                    from_id = str(msg.get("from", {}).get("id", ""))
+
+                    if from_id != user_id:
+                        log.warning("ignoring message from unauthorized user %s", from_id)
+                        continue
+                    if not text:
+                        continue
+
+                    log.info("telegram received: %s", text[:80])
+
+                    system_prompt = build_system_prompt(cfg, skills)
+                    messages = [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": text},
+                    ]
+
+                    response = await call_llm(cfg["name"], None, messages)
+
+                    for chunk in [response[i:i+4000] for i in range(0, len(response), 4000)]:
+                        await client.post(f"{api}/sendMessage", json={
+                            "chat_id": chat_id,
+                            "text": chunk,
+                        })
+            except Exception as e:
+                log.error("telegram poll error: %s", e)
+                await asyncio.sleep(5)
+
+
 async def run():
     cfg = load_config()
     agent_name = cfg["name"]
@@ -201,6 +274,10 @@ async def run():
     if not subscriptions:
         log.warning("no bus subscriptions configured — agent will idle")
 
+    telegram_task = None
+    if cfg.get("human_interface", {}).get("channel") == "telegram":
+        telegram_task = asyncio.create_task(telegram_poll(cfg, skills, nc))
+
     stop = asyncio.Event()
     loop = asyncio.get_event_loop()
     for sig in (signal.SIGTERM, signal.SIGINT):
@@ -209,6 +286,8 @@ async def run():
     log.info("agent %s ready — waiting for work orders", agent_name)
     await stop.wait()
 
+    if telegram_task:
+        telegram_task.cancel()
     await nc.drain()
     log.info("agent %s shutting down", agent_name)
 

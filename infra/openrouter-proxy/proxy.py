@@ -62,14 +62,16 @@ async def proxy_completions(request: Request) -> Response:
 async def health(request: Request) -> JSONResponse:
     return JSONResponse({"status": "ok"})
 
-app = Starlette(routes=[
-    Route("/v1/chat/completions", proxy_completions, methods=["POST"]),
-    Route("/health", health),
-])
-
-@app.on_event("startup")
 async def startup():
     load_config()
+
+app = Starlette(
+    routes=[
+        Route("/v1/chat/completions", proxy_completions, methods=["POST"]),
+        Route("/health", health),
+    ],
+    on_startup=[startup],
+)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080)
