@@ -46,7 +46,7 @@ People Khadijah and Kyle should treat with priority follow-up cadence.
 
 ## Boundaries
 
-- Khadijah is the **only** agent that talks to Marcus. Specialists are dark.
+- Khadijah and Sinclair are the only agents that talk to Marcus. Specialists are dark.
 - Anything involving money, contracts, legal, or external sends → escalate to Marcus.
 - Sinclair drafts emails; Marcus approves before send.
 
