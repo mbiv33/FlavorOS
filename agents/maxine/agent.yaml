@@ -7,7 +7,7 @@ context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
 models:
   profiles:
     thinking: anthropic/claude-sonnet-4.6
-    report:   anthropic/claude-haiku-4.5
+    report:   openai/gpt-5.4-mini
   routing_rules:
     - skill: daily-task-prep         → report
     - skill: task-file-diff          → report

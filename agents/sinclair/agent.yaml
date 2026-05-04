@@ -7,19 +7,26 @@ context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
 models:
   profiles:
     thinking: anthropic/claude-sonnet-4.6
-    crawl:    anthropic/claude-haiku-4.5
+    fast:     openai/gpt-5.4-mini
   endpoint: ${OPENROUTER_BASE_URL}
   routing_rules:
-    - skill: inbox-sweep        → crawl
-    - skill: label-message      → crawl
-    - skill: archive-decision   → crawl
-    - skill: draft-email        → thinking
+    - skill: inbox-sweep        → fast
+    - skill: label-message      → fast
+    - skill: archive-decision   → fast
+    - skill: draft-email
+      args: { stakes: high }
+      profile: thinking
+    - skill: draft-email
+      args: { stakes: high_stakes }
+      profile: thinking
+    - skill: draft-email
+      profile: fast
     - skill: schedule-decision  → thinking
     - skill: meeting-prep       → thinking
-    - skill: morning-vitals     → crawl
-    - skill: calendar-load-check → crawl
-    - skill: perma-v-checkin    → thinking
-    - skill: journal-sentiment-scan → thinking
+    - skill: morning-vitals     → fast
+    - skill: calendar-load-check → fast
+    - skill: perma-v-checkin    → fast
+    - skill: journal-sentiment-scan → fast
 
 skills_mounted:
   - executive-assistant

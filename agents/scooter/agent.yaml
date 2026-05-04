@@ -4,8 +4,47 @@ runtime: openclaw
 soul: /etc/flavoros/SOUL.md
 
 models:
-  primary:  openai/gpt-5-mini
-  fallback: anthropic/claude-haiku-4.5
+  profiles:
+    thinking: anthropic/claude-sonnet-4.6
+    fast:     openai/gpt-5.4-mini
+  routing_rules:
+    - skill: travel-logistics
+      args: { stakes: high }
+      profile: thinking
+    - skill: travel-logistics
+      args: { multi_constraint: true }
+      profile: thinking
+    - skill: travel-logistics
+      profile: fast
+    - skill: tech-ops
+      args: { stakes: high }
+      profile: thinking
+    - skill: tech-ops
+      profile: fast
+    - skill: briefing-coordination
+      args: { stakes: high }
+      profile: thinking
+    - skill: briefing-coordination
+      args: { multi_constraint: true }
+      profile: thinking
+    - skill: briefing-coordination
+      profile: fast
+    - skill: web-research
+      args: { stakes: high }
+      profile: thinking
+    - skill: web-research
+      args: { multi_constraint: true }
+      profile: thinking
+    - skill: web-research
+      profile: fast
+    - skill: logistics-research
+      args: { stakes: high }
+      profile: thinking
+    - skill: logistics-research
+      args: { multi_constraint: true }
+      profile: thinking
+    - skill: logistics-research
+      profile: fast
 
 skills_mounted:
   - travel-logistics

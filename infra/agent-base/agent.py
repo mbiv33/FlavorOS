@@ -89,20 +89,25 @@ def build_system_prompt(cfg: dict, skills: dict[str, str], skill_name: str | Non
     return "\n\n---\n\n".join(parts)
 
 
-def resolve_profile(cfg: dict, skill_name: str | None = None) -> str | None:
+def resolve_profile(cfg: dict, skill_name: str | None = None, args: dict | None = None) -> str | None:
     """Resolve which model profile to use based on routing rules."""
     models = cfg.get("models", {})
     if "profiles" not in models:
         return None
 
+    args = args or {}
     routing = models.get("routing_rules", [])
     if skill_name and routing:
         for rule in routing:
             if isinstance(rule, str) and skill_name in rule:
                 return rule.split("→")[-1].strip()
             elif isinstance(rule, dict):
-                if rule.get("skill") == skill_name:
-                    return rule.get("profile", "thinking")
+                if rule.get("skill") != skill_name:
+                    continue
+                rule_args = rule.get("args", {})
+                if rule_args and any(args.get(k) != v for k, v in rule_args.items()):
+                    continue
+                return rule.get("profile", "thinking")
     return "thinking"
 
 
@@ -154,7 +159,7 @@ async def handle_work_order(msg, cfg: dict, skills: dict[str, str], nc):
     log.info("received work_order: id=%s skill=%s args=%s", order_id, skill_name, args)
 
     system_prompt = build_system_prompt(cfg, skills, skill_name)
-    profile = resolve_profile(cfg, skill_name)
+    profile = resolve_profile(cfg, skill_name, args)
 
     user_message = f"Execute skill: {skill_name}\n"
     if args:
