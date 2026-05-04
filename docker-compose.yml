@@ -51,8 +51,10 @@ services:
     volumes:
       - /etc/flavoros/age.key:/etc/flavoros/age.key:ro
       - ./infra/secrets:/secrets:ro
-      - ./infra/composio.yaml:/secrets/composio.yaml:ro
+      - ./infra/composio.yaml:/grants/composio.yaml:ro
       - secrets-tmpfs:/run/flavor/secrets
+    environment:
+      GRANTS_FILE: /grants/composio.yaml
     healthcheck:
       test: ["CMD", "test", "-f", "/run/flavor/secrets/_shared/openrouter.key"]
       interval: 5s
