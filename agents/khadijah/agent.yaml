@@ -2,7 +2,7 @@ name: khadijah
 role: Chief of Staff (COS)
 runtime: hermes-agent
 soul: /etc/flavoros/SOUL.md
-context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
+context: /etc/flavoros/FLAVOROS_CONTEXT.md
 
 models:
   primary: anthropic/claude-sonnet-4.6
@@ -12,6 +12,7 @@ skills_mounted:
   - chief-of-staff
   - khadijah-voice
   - obsidian-chief-of-staff
+  - project-management-control
 
 plugins:
   obsidian:
@@ -19,8 +20,8 @@ plugins:
     bundles: [dataview, templater, tasks]
 
 obsidian:
-  primary_folders: ["00-Inbox", "10-Briefs", "35-Reports", "90-Archive"]
-  templates: ["10-Briefs/_templates/flavor-brief.md", "35-Reports/_templates/agent-report.md"]
+  primary_folders: ["00-Inbox", "05-SIGMA", "10-Briefs", "15-Readiness", "35-Reports", "90-Archive"]
+  templates: ["05-SIGMA/_templates/sigma.md", "10-Briefs/_templates/flavor-brief.md", "15-Readiness/_templates/readiness-artifact.md", "35-Reports/_templates/agent-report.md"]
 
 bus:
   publishes: [work_order.*, flag.*, audit.*]
@@ -28,7 +29,7 @@ bus:
 
 vault:
   read: ["**"]
-  write: ["00-Inbox/**", "10-Briefs/**", "90-Archive/**"]
+  write: ["00-Inbox/**", "05-SIGMA/**", "10-Briefs/**", "15-Readiness/**", "35-Reports/**", "90-Archive/**"]
 
 composio:
   read:  [comms]

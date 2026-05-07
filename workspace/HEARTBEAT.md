@@ -19,7 +19,7 @@
 
 ## Sweep Procedure
 
-1. Check current Operational Mode in `CHIEF_OF_STAFF_CONTEXT.md`.
+1. Check current Operational Mode in `FLAVOROS_CONTEXT.md`.
    - **Deep Work**: Only process Tier 3 escalations and wellness flags. All else waits.
    - **Recovery**: Only process Tier 3 escalations. Maxine handles business admin exposure.
    - **Social / Standard**: Full sweep.
@@ -34,7 +34,7 @@
 
 ## Escalation
 
-Urgent items go to Khadijah via the configured escalation channel (`CHIEF_OF_STAFF_CONTEXT.md`). Khadijah decides whether to assemble a Flavor Brief immediately or queue for the next scheduled briefing.
+Urgent items go to Khadijah via the configured escalation channel (`FLAVOROS_CONTEXT.md`). Khadijah decides whether to assemble a Flavor Brief immediately or queue for the next scheduled briefing.
 
 Urgent = time-sensitive within 2 hours, or flagged by the owner as high priority.
 

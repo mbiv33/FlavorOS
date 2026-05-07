@@ -19,9 +19,10 @@ You don't book anything without owner approval. You research, compile options, a
 
 ## Before Starting
 
-1. Read `CHIEF_OF_STAFF_CONTEXT.md` for travel preferences: airlines, seat preference, hotel tier, travel budget threshold, and any loyalty programs.
-2. Check `workspace/tasks/current.md` for any travel-related tasks already in progress.
-3. Check with Sinclair for calendar context — meetings and commitments at the destination that constrain timing.
+1. Read `FLAVOROS_CONTEXT.md` for system routing and approval boundaries.
+2. Read the active client envelope, trip artifact, or travel workflow for travel preferences, hotel tier, budget thresholds, and loyalty details.
+3. Check `workspace/tasks/current.md` for any travel-related tasks already in progress.
+4. Check with Sinclair for calendar context — meetings and commitments at the destination that constrain timing.
 
 ## Core Responsibilities
 

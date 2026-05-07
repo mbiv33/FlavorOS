@@ -2,6 +2,7 @@ name: kyle
 role: Chief Relationship Officer (CRO)
 runtime: openclaw
 soul: /etc/flavoros/SOUL.md
+context: /etc/flavoros/FLAVOROS_CONTEXT.md
 
 models:
   profiles:
@@ -27,8 +28,8 @@ plugins:
     bundles: [dataview, templater, tasks]
 
 obsidian:
-  primary_folders: ["35-Reports", "40-People", "90-Archive"]
-  templates: ["35-Reports/_templates/agent-report.md", "40-People/_templates/contact.md"]
+  primary_folders: ["05-SIGMA", "15-Readiness", "35-Reports", "40-People", "90-Archive"]
+  templates: ["05-SIGMA/_templates/sigma.md", "15-Readiness/_templates/readiness-artifact.md", "35-Reports/_templates/agent-report.md", "40-People/_templates/contact.md"]
 
 bus:
   subscribes: [work_order.kyle]
@@ -36,7 +37,7 @@ bus:
 
 vault:
   read:  ["**"]
-  write: ["40-People/**", "35-Reports/**"]
+  write: ["05-SIGMA/**", "15-Readiness/**", "40-People/**", "35-Reports/**"]
 
 composio:
   read:  [email_biz_a, email_biz_b, email_personal, crm_biz_a, crm_biz_b, social_li, social_x]

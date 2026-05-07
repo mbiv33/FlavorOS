@@ -1,0 +1,211 @@
+{
+  "main": {
+    "id": "ac7d3242e490aa48",
+    "type": "split",
+    "children": [
+      {
+        "id": "1cc249a877fc3be4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7d60ac2c3a6565aa",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "build/codex-claude/ENV_EXAMPLE.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ENV_EXAMPLE"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7ca7b50891969fc5",
+    "type": "split",
+    "children": [
+      {
+        "id": "d488e46861c35ef2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "605992f8b924a2c2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "d92cb098c893f388",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "7815cc2dcc3a1035",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "06bc6dc2d68875be",
+    "type": "split",
+    "children": [
+      {
+        "id": "922cc9403129a2ad",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "58345ae24f32626d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "build/codex-claude/ENV_EXAMPLE.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for ENV_EXAMPLE"
+            }
+          },
+          {
+            "id": "f4b4b9777b41ece0",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "build/codex-claude/ENV_EXAMPLE.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from ENV_EXAMPLE"
+            }
+          },
+          {
+            "id": "702522451ceea908",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "8198db9a22b2eae4",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "4a2d24f124b154a1",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "build/codex-claude/ENV_EXAMPLE.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of ENV_EXAMPLE"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "605992f8b924a2c2",
+  "lastOpenFiles": [
+    "dev_context/runtime/agent3-endpoint-tests.md",
+    "dev_context/runtime/agent2-provider-research.md",
+    "dev_context/runtime/agent1-logwatch.md",
+    "dev_context/runtime/README.md",
+    "dev_context/runtime",
+    "dev_context/PROJECT_MANAGEMENT_CLICKUP_OBSIDIAN_EXPERTISE.md",
+    "runbooks/IT_DIRECTOR_COMMAND_PROTOCOL.md",
+    "dev_context/VPS_DEV_AGENTS_RETASKING.md",
+    "dev_context/AGENT_OPS_INTEGRATION.md",
+    "dev_context/PROVIDER_EXPERTISE.md",
+    "dev_context",
+    "build/codex-claude/PRIVATE_ACCOUNT_AND_SECRETS_TRACKER_TEMPLATE.md",
+    "build/codex-claude/ACCOUNT_ACCESS_AND_SECRETS_PROTOCOL.md",
+    "runbooks/RELATIONSHIP_DISCOVERY_ONBOARDING.md",
+    "runbooks/SESSION_START_PROTOCOL.md",
+    "build/codex-claude/CODEX_CLAUDE_BUILD_INSTRUCTIONS.md",
+    "build/codex-claude/AGENT_ROUTING_AND_GOVERNANCE.md",
+    "build/codex-claude/ACCOUNT_CHECKLIST.md",
+    "architecture/CLIENT_ENVELOPE.md",
+    "architecture/PERSONA_PACKS.md",
+    "prd/FLAVOROS_12_HOUR_MVP.md",
+    "dev/NEXT_ACTIONS.md"
+  ]
+}

@@ -27,6 +27,12 @@ You own relationship momentum.
 - upcoming nurtures and warm-intro opportunities
 - relationship momentum that should become a task or meeting
 
+## Relationship Discovery Onboarding
+
+- Own the MVP onboarding flow for relationship discovery.
+- Confirm email/calendar authorization, extract candidate contacts, validate them conversationally, and initialize `workspace/relationships/current.md`.
+- Use `relationship-file-format.md` or `docs/runbooks/RELATIONSHIP_DISCOVERY_ONBOARDING.md` for structure and best practice.
+
 ## Output
 
 Report by urgency: overdue, due today, upcoming. Call out warm opportunities and brand-sensitive risks separately.

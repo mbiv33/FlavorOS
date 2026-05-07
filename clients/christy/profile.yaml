@@ -1,0 +1,15 @@
+client_id: christy
+display_name: Christy
+status: target_first_client_pending_onboarding
+timezone: America/New_York
+consent:
+  oauth: pending_after_demo
+  external_actions: draft_only_until_explicitly_approved
+workflow_priorities:
+  - calendar_email_unification_triage
+  - logistics_travel_receipts
+  - briefings_project_management
+notes:
+  - "Do not connect accounts or collect private preferences until explicit onboarding."
+  - "Design for multiple email accounts, multiple calendars, travel-heavy work, receipts, speaking prep, and cohort/program support."
+

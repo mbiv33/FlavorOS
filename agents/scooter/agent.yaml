@@ -2,6 +2,7 @@ name: scooter
 role: Chief Logistics Officer (CLO)
 runtime: openclaw
 soul: /etc/flavoros/SOUL.md
+context: /etc/flavoros/FLAVOROS_CONTEXT.md
 
 models:
   profiles:
@@ -63,8 +64,8 @@ plugins:
     bundles: [browser, research]
 
 obsidian:
-  primary_folders: ["20-Meetings", "35-Reports", "50-Travel", "70-Ops", "90-Archive"]
-  templates: ["20-Meetings/_templates/prep.md", "35-Reports/_templates/agent-report.md", "50-Travel/_templates/trip.md"]
+  primary_folders: ["05-SIGMA", "15-Readiness", "20-Meetings", "35-Reports", "50-Travel", "70-Ops", "90-Archive"]
+  templates: ["05-SIGMA/_templates/sigma.md", "15-Readiness/_templates/readiness-artifact.md", "20-Meetings/_templates/prep.md", "35-Reports/_templates/agent-report.md", "50-Travel/_templates/trip.md"]
 
 bus:
   subscribes: [work_order.scooter]
@@ -72,7 +73,7 @@ bus:
 
 vault:
   read:  ["**"]
-  write: ["20-Meetings/**", "35-Reports/**", "50-Travel/**", "70-Ops/**"]
+  write: ["05-SIGMA/**", "15-Readiness/**", "20-Meetings/**", "35-Reports/**", "50-Travel/**", "70-Ops/**"]
 
 composio:
   read:  [travel, flights, hotels, cal_personal, cal_biz_a, cal_biz_b, email_personal]

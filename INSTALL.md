@@ -29,15 +29,15 @@ Verify they're detected by starting a Hermes session and checking the skill list
 
 ## Step 3: Set Up the Context File
 
-Create `CHIEF_OF_STAFF_CONTEXT.md` in your project root and fill in every section:
+Create `FLAVOROS_CONTEXT.md` in your project root as the shared system context file:
 
-- **About You**: Name, timezone, role
-- **Communication**: Email accounts, calendar accounts, tone preference
-- **Authority**: What the assistant can handle vs. what needs your approval
-- **Work Hours**: When sweeps should run, quiet hours
-- **Tools Available**: Which MCP integrations are connected
-- **Follow-up Preferences**: Default cadence, VIP contacts
-- **Business Context**: Brief notes to help the assistant make better decisions
+- **System Identity**: product name, runtime model, architecture canon
+- **Authority**: default approval boundaries and escalation model
+- **Operating Modes**: Standard, Deep Work, Recovery, Social, Travel, or any local equivalent
+- **Artifact Contract**: where SIGMAs, readiness artifacts, and reports live
+- **Runtime Topology**: major services, buses, and storage layers
+
+Keep personal profile data, account mappings, and client-specific preferences outside this file in client envelopes, workspace docs, or vault artifacts.
 
 ## Step 4: Set Up Workspace Files
 
@@ -109,7 +109,7 @@ Run through this after setup to confirm everything works:
 
 **Installation**:
 - [ ] Skills are installed in `~/.hermes/skills/` (one directory per skill, each containing SKILL.md)
-- [ ] `CHIEF_OF_STAFF_CONTEXT.md` is filled out and present in your project root
+- [ ] `FLAVOROS_CONTEXT.md` is filled out and present in your project root
 - [ ] `workspace/tasks/current.md` exists with required sections (Today, Next up, Rules, Done)
 - [ ] `workspace/relationships/current.md` exists with sections (Active Follow-ups, Nurture, Archived)
 - [ ] `workspace/HEARTBEAT.md` is present
@@ -147,4 +147,4 @@ A filled-out context file is no longer scaffolded; create the file directly in y
 
 **Cron not running**: Make sure the cron scheduler is started (e.g., `hermes cron start`). Check status with your cron list command.
 
-**Context file not found**: Skills look for `CHIEF_OF_STAFF_CONTEXT.md` in your project root (the directory where you start Hermes). Make sure it's there.
+**Context file not found**: Skills look for `FLAVOROS_CONTEXT.md` in your project root (the directory where you start Hermes). Make sure it's there.

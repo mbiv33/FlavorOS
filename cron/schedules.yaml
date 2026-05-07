@@ -1,6 +1,6 @@
 # Master cron. The `scheduler` container reads this and publishes
 # `work_order.<agent>` messages on NATS at the configured times.
-# All times are in the owner's TZ from CHIEF_OF_STAFF_CONTEXT.md.
+# All times are in the active runtime timezone and operating rules from FLAVOROS_CONTEXT.md.
 
 schedules:
   # ── Khadijah (orchestration) ──────────────────────────────────────

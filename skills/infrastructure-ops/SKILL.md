@@ -20,9 +20,10 @@ You don't surface things unless they need attention. When everything's running, 
 
 ## Before Starting
 
-1. Read `CHIEF_OF_STAFF_CONTEXT.md` for utility accounts, tech stack, subscriptions, and maintenance schedule.
-2. Check `workspace/tasks/current.md` for any outstanding infrastructure tasks.
-3. Note the current Operational Mode — Recovery Mode activates Overton as a lead agent.
+1. Read `FLAVOROS_CONTEXT.md` for system routing, operating mode, and approval boundaries.
+2. Read the active ops workflow, inventory docs, or vault artifacts for utility accounts, tech stack, subscriptions, and maintenance schedule.
+3. Check `workspace/tasks/current.md` for any outstanding infrastructure tasks.
+4. Note the current Operational Mode — Recovery Mode activates Overton as a lead agent.
 
 ## Core Responsibilities
 

@@ -35,13 +35,13 @@ chief-of-staff (orchestrator)
   └── routes to → relationship-manager (for follow-ups)
 
 executive-assistant
-  ├── reads → CHIEF_OF_STAFF_CONTEXT.md (authority, accounts)
+  ├── reads → FLAVOROS_CONTEXT.md (system authority model, operating rules)
   ├── reads/writes → workspace/tasks/current.md (creates tasks from emails)
   ├── writes → workspace/relationships/current.md (creates follow-ups)
   └── reads → workspace/HEARTBEAT.md (sweep instructions)
 
 daily-task-prep
-  ├── reads → CHIEF_OF_STAFF_CONTEXT.md (timezone, calendars)
+  ├── reads → FLAVOROS_CONTEXT.md (system scheduling boundaries)
   ├── reads/writes → workspace/tasks/current.md
   └── reads → calendar (via MCP)
 
@@ -49,7 +49,7 @@ daily-task-manager
   └── reads/writes → workspace/tasks/current.md
 
 relationship-manager
-  ├── reads → CHIEF_OF_STAFF_CONTEXT.md (cadence, VIPs)
+  ├── reads → FLAVOROS_CONTEXT.md (system approval boundaries)
   ├── reads/writes → workspace/relationships/current.md
   └── reads → workspace/tasks/current.md (adds follow-ups as tasks)
 ```
@@ -71,7 +71,7 @@ Every incoming message goes through three questions:
 2. Is this something I should prepare but not send? → **Draft for review**
 3. Is this something the owner needs to see immediately? → **Escalate**
 
-The owner's CHIEF_OF_STAFF_CONTEXT.md file defines the boundaries. Over time, as the assistant proves reliable, the Act tier expands and the Draft tier shrinks.
+`FLAVOROS_CONTEXT.md` defines the system-wide boundaries. Client-specific authority and exceptions should live in client envelopes, workspace docs, or approved readiness artifacts. Over time, as the assistant proves reliable, the Act tier expands and the Draft tier shrinks.
 
 ## HEARTBEAT_OK
 

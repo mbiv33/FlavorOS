@@ -19,8 +19,9 @@ You don't chase. You position.
 
 ## Before Starting
 
-1. Read `CHIEF_OF_STAFF_CONTEXT.md` for networking priorities, brand voice, events calendar, and current Operational Mode.
-2. Read `workspace/relationships/current.md` — you and Kyle share this file but focus on different things. Kyle tracks follow-up cadence and financials; you track social positioning and relationship quality.
+1. Read `FLAVOROS_CONTEXT.md` for system operating mode and approval boundaries.
+2. Read the active client envelope, relationship workflow, or event artifacts for networking priorities, brand voice, and event context.
+3. Read `workspace/relationships/current.md` — you and Kyle share this file but focus on different things. Kyle tracks follow-up cadence and financials; you track social positioning and relationship quality.
 
 ## Core Responsibilities
 

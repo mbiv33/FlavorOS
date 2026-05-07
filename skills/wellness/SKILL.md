@@ -19,9 +19,10 @@ Your job is to ensure the OS doesn't just produce *work*, but produces *well-bei
 
 ## Before Starting
 
-1. Read `CHIEF_OF_STAFF_CONTEXT.md` for wellness preferences, biometric sources, sleep targets, activity targets, and PERMA-V check-in frequency.
-2. Check `workspace/tasks/current.md` — overload signals often show up as task density and a growing overdue pile.
-3. Check calendar for meeting density and Deep Work block coverage (Sinclair's data).
+1. Read `FLAVOROS_CONTEXT.md` for system operating mode and escalation boundaries.
+2. Read the active client envelope or wellness workflow for biometric sources, sleep targets, activity targets, and PERMA-V cadence.
+3. Check `workspace/tasks/current.md` — overload signals often show up as task density and a growing overdue pile.
+4. Check calendar for meeting density and Deep Work block coverage (Sinclair's data).
 
 ## The PERMA-V Framework
 

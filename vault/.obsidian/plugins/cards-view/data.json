@@ -1,0 +1,17 @@
+{
+  "baseQuery": "",
+  "minCardWidth": 200,
+  "launchOnStart": false,
+  "showDeleteButton": true,
+  "displayTitle": "Both",
+  "pinnedFiles": [],
+  "savedSearch": [
+    "#flavoros",
+    "#mvp",
+    "#dashboard",
+    "#obsidian",
+    "#setup",
+    "#tasks",
+    "#kanban"
+  ]
+}

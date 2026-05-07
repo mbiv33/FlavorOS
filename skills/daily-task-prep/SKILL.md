@@ -16,7 +16,7 @@ license: MIT
 
 ## Before Starting
 
-1. Read `CHIEF_OF_STAFF_CONTEXT.md` for timezone and calendar accounts.
+1. Read `FLAVOROS_CONTEXT.md` for system operating rules and scheduling boundaries.
 2. Read `workspace/tasks/current.md` — this is the file you'll modify.
 3. If calendar tools are available, query tomorrow's calendar events (Sinclair's data).
 4. Check `workspace/relationships/current.md` for follow-ups due tomorrow (Kyle's data).
@@ -28,7 +28,7 @@ license: MIT
 3. Copy recurring weekday items into the **Today** section (skip weekends).
 4. Scan **Backlog (with due date)** — promote any items due tomorrow to **Today**. Remove from Backlog after adding to Today.
 5. Scan **Recurring reminders** — check if any are triggered for tomorrow. Copy to **Today**. Advance the "next" date in the source entry. Do not remove the source entry.
-6. If calendar is accessible, add tomorrow's meetings/calls (skip personal appointments, lunch blocks, and family calendar items unless explicitly requested in context file).
+6. If calendar is accessible, add tomorrow's meetings/calls and skip non-work or protected blocks unless the relevant client or calendar artifact explicitly says otherwise.
 7. Check `workspace/relationships/current.md` — if Kyle has follow-ups due tomorrow, add them as tasks.
 8. Reorder **Today**: explicit priorities first, then due-today items, then recurring tasks, then time-ordered meetings.
 

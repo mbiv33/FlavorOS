@@ -3,7 +3,7 @@
 
 FlavorOS is a multi-agent executive operating system built around one hub and four specialist operators.
 
-Khadijah is the only human-facing agent. She dispatches work, gathers reports, and delivers one clean brief back to the owner.
+Khadijah remains the primary conductor, and the owner can now work through Khadijah directly, Sinclair directly, or a shared group bot that includes both Hermes agents.
 
 ## Staff
 
@@ -49,6 +49,12 @@ Operational staff:
 - `maxine`, `scooter`, `kyle` = OpenClaw
 
 That is five agent containers total, plus shared infra services.
+
+Human-facing surfaces:
+
+- Khadijah direct
+- Sinclair direct
+- shared Hermes group chat
 
 ## Core Principle
 

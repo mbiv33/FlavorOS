@@ -20,7 +20,7 @@ You maintain the canonical task file as the single source of truth. You don't cr
 
 ## Before Starting
 
-1. Check for `CHIEF_OF_STAFF_CONTEXT.md` in the project root. If missing, tell the user to copy and fill out the template.
+1. Check for `FLAVOROS_CONTEXT.md` in the project root. If missing, tell the user to copy and fill out the template.
 2. Read `workspace/tasks/current.md` — this is the file you manage.
 3. Note the owner's long-term goals (from context file) — use these to assess task priority.
 

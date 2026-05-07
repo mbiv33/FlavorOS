@@ -2,40 +2,33 @@
 
 ## Active Follow-ups
 
-### Jane Smith
-- Context: Partnership discussion re: co-marketing
-- Last contact: 2026-03-30
-- Next follow-up: 2026-04-01
+> Add new active threads below. Use the format from `relationship-file-format.md`.
+
+### [Contact Name]
+- Context: 
+- Last contact: YYYY-MM-DD
+- Next follow-up: YYYY-MM-DD
 - Touch #: 1
 - Status: Awaiting reply
-- Notes: Waiting on response to intro email
-
-### Tom Rivera
-- Context: Sales intro from Mike
-- Last contact: 2026-03-28
-- Next follow-up: 2026-04-02
-- Touch #: 2
-- Status: Awaiting reply
-- Notes: Sent second follow-up
-
-> *Remove the example entries above and replace with real follow-ups.*
+- Notes: 
 
 ## Nurture
 
-### Sarah Chen
-- Context: Former colleague, advisory relationship
-- Last contact: 2026-03-15
-- Frequency: Monthly
-- Next check-in: 2026-04-15
-- Notes: Good candidate for periodic update
+> Add relationships to monitor over time. Use the format from `relationship-file-format.md`.
 
-> *Remove the example entries above and replace with real contacts.*
+### [Contact Name]
+- Context: 
+- Last contact: YYYY-MM-DD
+- Frequency: Monthly
+- Next check-in: YYYY-MM-DD
+- Notes: 
 
 ## Archived
 
-### Alex Johnson
-- Context: Podcast guest pitch
-- Resolved: 2026-03-10
-- Outcome: Recording scheduled for April
+> Move completed or closed-out follow-ups here. Use the format from `relationship-file-format.md`.
 
-> *Remove the example entries above. Completed and closed-out follow-ups go here.*
+### [Contact Name]
+- Context: 
+- Resolved: YYYY-MM-DD
+- Outcome: 
+

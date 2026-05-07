@@ -6,21 +6,21 @@ How to customize the Chief of Staff OS for your workflow.
 
 ## Start with the Context File
 
-Everything flows from `CHIEF_OF_STAFF_CONTEXT.md`. Before tweaking skills, make sure your context file accurately reflects:
-- Your email accounts and calendar setup
-- Your authority preferences (what the assistant can do without asking)
-- Your work hours and quiet hours
-- Your follow-up style and VIP contacts
+`FLAVOROS_CONTEXT.md` now holds system-level FlavorOS rules, not personal profile data. Before tweaking skills, make sure:
+- `FLAVOROS_CONTEXT.md` reflects the operating model and authority boundaries
+- client-specific account mappings and preferences live in client envelopes, workspace files, or vault artifacts
+- approval rules are clear in the active client workflow
 
-Most customization happens here, not in the skill files.
+Most product-level customization happens in `FLAVOROS_CONTEXT.md`. Most client-level customization should happen outside it.
 
 ## Adjusting Authority Levels
 
 The default authority framework is conservative — the assistant drafts most replies for your review. To expand what it handles autonomously:
 
-1. Open your `CHIEF_OF_STAFF_CONTEXT.md`
-2. Move items from "Draft for review" to "Act autonomously"
-3. Be specific: "Reply to scheduling confirmations" is better than "handle routine emails"
+1. Open `FLAVOROS_CONTEXT.md` for system-level authority defaults
+2. Open the active client envelope or workflow artifact for client-specific overrides
+3. Move items from "Draft for review" to "Act autonomously"
+4. Be specific: "Reply to scheduling confirmations" is better than "handle routine emails"
 
 Start conservative. Expand as you build trust.
 
@@ -28,8 +28,8 @@ Start conservative. Expand as you build trust.
 
 The default cadence is 2 → 5 → 7 days. To change it:
 
-1. Update the "Follow-up Preferences" section in `CHIEF_OF_STAFF_CONTEXT.md`
-2. The relationship-manager skill reads this on every run
+1. Update the active client envelope, relationship workflow, or vault note with the preferred cadence
+2. The relationship-manager workflow should read that client-specific source on every run
 
 For different cadences per contact type, add notes in the Business Context section.
 
@@ -61,8 +61,8 @@ The task file format is flexible. To add custom sections:
 
 ## Adding New Email Accounts
 
-1. Add the account to CHIEF_OF_STAFF_CONTEXT.md under "Additional email accounts"
-2. Add the corresponding calendar under "Calendar accounts"
+1. Add the account to the active client envelope or connector inventory
+2. Add the corresponding calendar alias to the approved workflow/tool config
 3. Configure the MCP server for the new account in `~/.hermes/config.yaml`
 
 ## Integrating External Tools
@@ -70,7 +70,7 @@ The task file format is flexible. To add custom sections:
 The CoS skills are tool-agnostic — they describe what to do, not which specific tool to use. To add integrations:
 
 1. Set up the MCP server in `~/.hermes/config.yaml`
-2. Check the box in CHIEF_OF_STAFF_CONTEXT.md under "Tools Available"
+2. Record the tool in the relevant client or workspace ops doc
 3. Add notes in `workspace/TOOLS.md` about any quirks
 
 ## Building Custom Skills
@@ -79,7 +79,7 @@ The five included skills cover the core operating model. To add your own:
 
 1. Create a new directory under `skills/` with a `SKILL.md`
 2. Use the same YAML frontmatter pattern (name, description, version, author, license)
-3. Reference `CHIEF_OF_STAFF_CONTEXT.md` if it needs owner configuration
+3. Reference `FLAVOROS_CONTEXT.md` for system rules and the client envelope for client-specific configuration
 4. Add a cron schedule if it should run automatically
 
 Examples of skills you might add:

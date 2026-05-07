@@ -1,6 +1,6 @@
 # Follow-up Cadence Reference
 
-Default cadence (configurable in CHIEF_OF_STAFF_CONTEXT.md):
+Default cadence (configurable in FLAVOROS_CONTEXT.md):
 
 ## Touch 1 — Day 2 (Gentle)
 

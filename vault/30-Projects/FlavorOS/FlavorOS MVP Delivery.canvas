@@ -1,0 +1,23 @@
+{
+	"nodes":[
+		{"id":"prime","type":"text","x":0,"y":0,"width":520,"height":240,"text":"# FlavorOS MVP\nShip a voice-first, multi-agent executive operating system.\n\nProof: live voice, agent delegation, durable artifacts, email/calendar operating loop, visible follow-up."},
+		{"id":"agents","type":"text","x":650,"y":-280,"width":460,"height":260,"text":"## Phase 1: Agents First\n- VPS Dev Agent 1: logwatch\n- VPS Dev Agent 2: provider research\n- VPS Dev Agent 3: endpoint tests\n- Product agents: normalized work orders and reports\n\nNext: FOS-MVP-005, 006, 007"},
+		{"id":"voice","type":"text","x":650,"y":60,"width":460,"height":260,"text":"## Phase 2: Voice Demo\n- Hermes-aware response path\n- Sinclair impromptu voice\n- Khadijah briefing mode\n- Deferred readiness artifacts\n- Barge-in/interruption testing\n\nNext: FOS-MVP-009, 010, 011, 012"},
+		{"id":"email_calendar","type":"text","x":650,"y":400,"width":460,"height":260,"text":"## Phase 3: Email/Calendar Loop\nOne inbound email creates:\n- SIGMA\n- draft reply\n- calendar artifact\n- PM/task artifact\n- visible follow-up update\n\nNext: FOS-MVP-013, 014, 015"},
+		{"id":"uiux","type":"text","x":1220,"y":-110,"width":460,"height":260,"text":"## Phase 4: UI/UX Operator Console\nMake FlavorOS visible:\n- agent status\n- active work orders\n- recent reports\n- pending approvals\n- demo state\n\nNext: FOS-MVP-016, 017, 018"},
+		{"id":"deploy","type":"text","x":1220,"y":260,"width":460,"height":260,"text":"## Phase 5: Deployable Beta\n- repeatable VPS deploy\n- no-value secrets checks\n- release checklist\n- rollback path\n- Christy consented beta plan\n\nNext: FOS-MVP-019, 020"},
+		{"id":"dashboard","type":"file","file":"30-Projects/FlavorOS/FlavorOS MVP Dashboard.md","x":0,"y":350,"width":360,"height":120},
+		{"id":"kanban","type":"file","file":"30-Projects/FlavorOS/FlavorOS MVP Kanban.md","x":0,"y":520,"width":360,"height":120},
+		{"id":"tasks","type":"file","file":"30-Projects/FlavorOS/FlavorOS MVP Tasks.md","x":0,"y":690,"width":360,"height":120}
+	],
+	"edges":[
+		{"id":"e-prime-agents","fromNode":"prime","fromSide":"right","toNode":"agents","toSide":"left"},
+		{"id":"e-agents-voice","fromNode":"agents","fromSide":"bottom","toNode":"voice","toSide":"top"},
+		{"id":"e-voice-email","fromNode":"voice","fromSide":"bottom","toNode":"email_calendar","toSide":"top"},
+		{"id":"e-voice-ui","fromNode":"voice","fromSide":"right","toNode":"uiux","toSide":"left"},
+		{"id":"e-ui-deploy","fromNode":"uiux","fromSide":"bottom","toNode":"deploy","toSide":"top"},
+		{"id":"e-dashboard-prime","fromNode":"dashboard","fromSide":"top","toNode":"prime","toSide":"bottom"},
+		{"id":"e-kanban-dashboard","fromNode":"kanban","fromSide":"top","toNode":"dashboard","toSide":"bottom"},
+		{"id":"e-tasks-kanban","fromNode":"tasks","fromSide":"top","toNode":"kanban","toSide":"bottom"}
+	]
+}

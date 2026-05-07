@@ -1,5 +1,7 @@
 # Plaintext secrets — never commit
 infra/secrets/secrets.yaml
+infra/secrets/secrets.local.yaml
+infra/secrets/secrets.local.*.yaml
 infra/secrets/*.plain.yaml
 infra/secrets/agents/*.yaml
 !infra/secrets/secrets.example.yaml
@@ -12,11 +14,25 @@ age.key
 .env
 .env.local
 
+# Private operator workspace for account/secrets intake
+.ops-private/
+
+# Local Claude worktrees and machine-specific state
+.claude/worktrees/
+
 # Decrypted runtime
 /run/flavor/
 
 # Vault local cache
 /vault/.obsidian/workspace*
+
+# macOS Finder metadata
+.DS_Store
+**/.DS_Store
+
+# Raw local session/import drops; curate into docs/archive or docs/build first
+AppDev Insights/
+SESSION_RETROSPECTIVE.md
 
 # Build artifacts
 **/__pycache__/

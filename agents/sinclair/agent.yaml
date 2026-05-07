@@ -2,7 +2,7 @@ name: sinclair
 role: Executive Assistant (EA)
 runtime: hermes-agent
 soul: /etc/flavoros/SOUL.md
-context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
+context: /etc/flavoros/FLAVOROS_CONTEXT.md
 
 models:
   profiles:
@@ -42,8 +42,8 @@ plugins:
     enabled: true
 
 obsidian:
-  primary_folders: ["20-Meetings", "35-Reports", "60-Wellness", "80-Journal", "90-Archive"]
-  templates: ["20-Meetings/_templates/prep.md", "35-Reports/_templates/agent-report.md", "60-Wellness/_templates/perma-v-checkin.md"]
+  primary_folders: ["05-SIGMA", "15-Readiness", "20-Meetings", "35-Reports", "60-Wellness", "80-Journal", "90-Archive"]
+  templates: ["05-SIGMA/_templates/sigma.md", "15-Readiness/_templates/readiness-artifact.md", "20-Meetings/_templates/prep.md", "35-Reports/_templates/agent-report.md", "60-Wellness/_templates/perma-v-checkin.md"]
 
 bus:
   subscribes: [work_order.sinclair]
@@ -51,7 +51,7 @@ bus:
 
 vault:
   read:  ["**"]
-  write: ["20-Meetings/**", "35-Reports/**", "60-Wellness/**"]
+  write: ["05-SIGMA/**", "15-Readiness/**", "20-Meetings/**", "35-Reports/**", "60-Wellness/**"]
 
 composio:
   read:  [email_biz_a, email_biz_b, email_personal, cal_biz_a, cal_biz_b, cal_personal]

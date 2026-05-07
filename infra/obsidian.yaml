@@ -12,7 +12,9 @@ sync:
 
 folders:
   "00-Inbox":     { writers: [khadijah], purpose: "Captures, raw notes" }
+  "05-SIGMA":     { writers: [khadijah, sinclair, maxine, scooter, kyle], purpose: "Structured Intelligence Graph Memory Artifacts created for cross-agent use" }
   "10-Briefs":    { writers: [khadijah], purpose: "Daily Flavor Briefs" }
+  "15-Readiness": { writers: [khadijah, sinclair, maxine, scooter, kyle], purpose: "Prepared drafts, packets, proposals, checks, and next moves for review or execution" }
   "20-Meetings":  { writers: [sinclair, maxine, scooter], purpose: "Pre-meeting prep, briefings, and coordination notes" }
   "30-Projects":  { writers: [maxine], purpose: "Active projects" }
   "35-Reports":   { writers: [maxine, kyle, sinclair, scooter], purpose: "Agent-generated reports: project status, pipeline, wellness, logistics, and KPI rollups" }
@@ -24,7 +26,9 @@ folders:
   "90-Archive":   { writers: [khadijah, sinclair, maxine, kyle, scooter] }
 
 templates:
+  sigma:          "05-SIGMA/_templates/sigma.md"
   daily_brief:    "10-Briefs/_templates/flavor-brief.md"
+  readiness:      "15-Readiness/_templates/readiness-artifact.md"
   meeting_prep:   "20-Meetings/_templates/prep.md"
   project_page:   "30-Projects/_templates/project.md"
   agent_report:   "35-Reports/_templates/agent-report.md"

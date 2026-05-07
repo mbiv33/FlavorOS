@@ -2,7 +2,7 @@
 
 FlavorOS is a VPS-deployed, containerized, hub-and-spoke executive OS.
 
-Khadijah and Sinclair are the two human-facing Hermes agents. They coordinate with the three OpenClaw specialists over the internal bus.
+Khadijah and Sinclair are the two human-facing Hermes agents. They coordinate with the three OpenClaw specialists over the internal bus, and they now share a joint group chat front door alongside their individual direct lanes.
 
 ## Active Org Chart
 
@@ -65,7 +65,7 @@ agents/
 │       ├── relationship-manager/
 │       ├── brand-social/
 │       └── obsidian-relationships/
-├── CHIEF_OF_STAFF_CONTEXT.md
+├── FLAVOROS_CONTEXT.md
 └── global_project.yaml
 ```
 
@@ -93,6 +93,19 @@ Five agent containers plus shared infra:
 - `flag.<severity>` — urgent escalation
 - `audit.*` — audit fanout
 
+## Human Interface Topology
+
+- `khadijah` direct — primary lane for approvals, synthesis, and decision briefs
+- `sinclair` direct — direct lane for inbox, calendar, meeting prep, and wellness support
+- shared Telegram group bot — a joint room with Marcus, Khadijah, and Sinclair
+
+Shared room routing rules:
+
+- Khadijah owns first response by default and keeps the thread aligned to decisions.
+- Sinclair joins explicitly when mentioned or when the request is clearly in EA scope.
+- Specialists remain dark; any handoff to Maxine, Scooter, or Kyle stays internal and returns as a Hermes response.
+- Voice remains per-agent. The group bot is the text-first coordination surface.
+
 ## Obsidian
 
 The Obsidian vault is shared institutional memory.
@@ -115,14 +128,14 @@ Each active agent has both:
 - a role-specific Obsidian skill in `agents/<name>/skills/`
 - Obsidian plugin metadata in `agents/<name>/agent.yaml`
 
-Sinclair and Khadijah also have direct voice surfaces.
+Sinclair and Khadijah also have direct voice surfaces, while the shared group bot acts as a joint coordination layer rather than a separate specialist-facing runtime.
 
 ## Prompt Assembly
 
 Each agent runtime loads:
 
 1. `SOUL.md`
-2. `CHIEF_OF_STAFF_CONTEXT.md` when configured
+2. `FLAVOROS_CONTEXT.md` when configured
 3. all mounted local skills under `/skills/*/SKILL.md`
 4. vault and HITL constraints from `agent.yaml`
 

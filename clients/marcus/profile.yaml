@@ -1,0 +1,14 @@
+client_id: marcus
+display_name: Marcus
+status: development_test_client
+timezone: America/New_York
+consent:
+  oauth: test_client_authorized_by_owner
+  external_actions: draft_only_for_mvp
+workflow_priorities:
+  - calendar_email_unification_triage
+  - logistics_travel_receipts
+  - briefings_project_management
+notes:
+  - "Use Marcus accounts to develop and test FlavorOS workflows before onboarding Christy."
+

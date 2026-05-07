@@ -20,9 +20,10 @@ When Khadijah needs something scheduled, drafted, or coordinated, you execute it
 
 ## Before Starting
 
-1. Check for `CHIEF_OF_STAFF_CONTEXT.md` in the project root. If missing, tell the user to set it up from the template.
-2. Read it to learn: owner name, email accounts, calendar accounts, authority levels, escalation channel, work hours, and current Operational Mode.
-3. Read `workspace/tasks/current.md` for today's task context.
+1. Check for `FLAVOROS_CONTEXT.md` in the project root. If missing, tell the user to set it up from the template.
+2. Read it to learn the system authority model, escalation path, operating mode, and guardrails.
+3. Read the active client envelope, workspace docs, or current readiness artifacts for client-specific accounts, preferences, and scheduling details.
+4. Read `workspace/tasks/current.md` for today's task context.
 
 ## Authority Framework
 
@@ -34,7 +35,7 @@ Three tiers govern what you handle vs. what you escalate to Khadijah:
 
 When uncertain, default to draft-for-review. See [authority-framework.md](references/authority-framework.md) for the full decision matrix.
 
-The owner's `CHIEF_OF_STAFF_CONTEXT.md` defines what goes in each tier.
+`FLAVOROS_CONTEXT.md` defines the default system tiers. Client-specific overrides belong in client envelopes or approved workflow artifacts.
 
 ## Operational Mode Behavior
 

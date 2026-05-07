@@ -16,7 +16,8 @@ The Chief of Staff OS supports three levels of adoption. Start where you are and
 
 **Workspace files**:
 - `workspace/tasks/current.md`
-- `CHIEF_OF_STAFF_CONTEXT.md` (fill out: name, email, calendar, authority levels)
+- `FLAVOROS_CONTEXT.md` (system rules and authority model)
+- client envelope or workflow docs for personal email/calendar/profile details
 
 **Cron jobs** (optional):
 - EA inbox sweep every 15 minutes during work hours

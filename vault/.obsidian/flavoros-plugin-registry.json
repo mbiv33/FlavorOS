@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-05-07",
+  "vault": "FlavorOS/vault",
+  "install_note": "Run scripts/open-flavoros-obsidian.command from macOS. Plugins install per vault under vault/.obsidian/plugins.",
+  "plugins": [
+    {
+      "id": "dataview",
+      "name": "Dataview",
+      "repo": "blacksmithgu/obsidian-dataview",
+      "required_for": ["FlavorOS MVP Dashboard Dataview queries"],
+      "enable_by_default": true
+    },
+    {
+      "id": "obsidian-kanban",
+      "name": "Kanban",
+      "repo": "mgmeyers/obsidian-kanban",
+      "required_for": ["FlavorOS MVP Kanban board rendering"],
+      "enable_by_default": true
+    },
+    {
+      "id": "tasknotes",
+      "name": "TaskNotes",
+      "repo": "callumalpass/tasknotes",
+      "required_for": ["Full task, agenda, timeline, and project-management views"],
+      "enable_by_default": true
+    },
+    {
+      "id": "obsidian-meta-bind-plugin",
+      "name": "Meta Bind",
+      "repo": "mProjectsCode/obsidian-meta-bind-plugin",
+      "required_for": ["Interactive dashboard controls and inline metadata displays"],
+      "enable_by_default": true
+    },
+    {
+      "id": "cards-view",
+      "name": "Cards View",
+      "repo": "jillro/obsidian-cards-view-plugin",
+      "required_for": ["Card-based CRM and artifact display"],
+      "enable_by_default": true
+    },
+    {
+      "id": "obsidian-mind-map",
+      "name": "Mind Map",
+      "repo": "lynchjames/obsidian-mind-map",
+      "required_for": ["Document map and workstream visualization"],
+      "enable_by_default": true
+    },
+    {
+      "id": "heatmap-calendar",
+      "name": "Heatmap Calendar",
+      "repo": "Richardsl/heatmap-calendar-obsidian",
+      "required_for": ["Activity heatmap and delivery streak views"],
+      "enable_by_default": true
+    },
+    {
+      "id": "tasks-calendar-wrapper",
+      "name": "Tasks Calendar Wrapper",
+      "repo": "Leonezz/obsidian-tasks-calendar-wrapper",
+      "required_for": ["Timeline/calendar task view"],
+      "enable_by_default": true
+    },
+    {
+      "id": "obsidian-canvas-presentation",
+      "name": "Canvas Presentation",
+      "repo": "Quorafind/Obsidian-Canvas-Presentation",
+      "required_for": ["Presentation-style Canvas walkthroughs"],
+      "enable_by_default": true
+    },
+    {
+      "id": "obsidian-startpage",
+      "name": "Startpage",
+      "repo": "kuzzh/obsidian-startpage",
+      "required_for": ["Vault start page and pinned navigation"],
+      "enable_by_default": true
+    },
+    {
+      "id": "obsidian-metatable",
+      "name": "Metatable",
+      "repo": "arnau/obsidian-metatable",
+      "required_for": ["Expanded frontmatter tables"],
+      "enable_by_default": true
+    },
+    {
+      "id": "templater-obsidian",
+      "name": "Templater",
+      "repo": "SilentVoid13/Templater",
+      "required_for": ["Existing agent Obsidian bundle references and future templates"],
+      "enable_by_default": true
+    },
+    {
+      "id": "obsidian-tasks-plugin",
+      "name": "Tasks",
+      "repo": "obsidian-tasks-group/obsidian-tasks",
+      "required_for": ["Existing agent Obsidian bundle references and richer task queries"],
+      "enable_by_default": true
+    }
+  ]
+}
+

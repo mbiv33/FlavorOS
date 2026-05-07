@@ -1,6 +1,6 @@
 # Follow-up Cadence Reference
 
-Default cadence (configurable in CHIEF_OF_STAFF_CONTEXT.md):
+Default cadence (configurable in the active client envelope, relationship workflow, or approved readiness artifact):
 
 ## Touch 1 — Day 2 (Gentle)
 

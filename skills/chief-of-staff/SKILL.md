@@ -20,7 +20,7 @@ You don't do the work — you make sure the right work gets done by the right ag
 
 ## Before Starting
 
-1. Read `CHIEF_OF_STAFF_CONTEXT.md` for the owner's priorities, work hours, preferences, and current Operational Mode.
+1. Read `FLAVOROS_CONTEXT.md` for FlavorOS operating rules, approval boundaries, and current Operational Mode.
 2. Read `workspace/tasks/current.md` for current task state (Maxine's domain).
 3. Read `workspace/relationships/current.md` for follow-up state (Kyle's domain).
 4. If inbox tools are available, get a quick inbox summary (Sinclair's domain).

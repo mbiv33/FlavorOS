@@ -39,4 +39,4 @@ When a message falls between tiers, go with the more conservative tier. Draft-fo
 
 ## Overrides
 
-If the CHIEF_OF_STAFF_CONTEXT.md specifies different rules, those take precedence.
+If the active client envelope, HITL policy, or approved readiness artifact specifies different rules, those take precedence over this default matrix.

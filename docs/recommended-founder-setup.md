@@ -20,7 +20,7 @@ Skip `chief-of-staff` for now — it adds morning briefings and EOD reviews, whi
 Copy the template:
 
 ```bash
-touch ~/your-project/CHIEF_OF_STAFF_CONTEXT.md
+touch ~/your-project/FLAVOROS_CONTEXT.md
 ```
 
 The fields that matter most for getting started:

@@ -1,6 +1,6 @@
 # Email Templates Reference
 
-These are starting points. Adapt tone and length to match the owner's style from CHIEF_OF_STAFF_CONTEXT.md.
+These are starting points. Adapt tone and length to match the active client envelope, recent sent-mail patterns, and any approved readiness artifact.
 
 ## 1. Proposing Meeting Times
 

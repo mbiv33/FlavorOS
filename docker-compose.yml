@@ -10,7 +10,7 @@ x-agent-base: &agent-base
     SECRETS_DIR: /run/flavor/secrets
   volumes:
     - ./vault:/vault
-    - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+    - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
     - ./workspace:/workspace
     - secrets-tmpfs:/run/flavor/secrets:ro
   depends_on:
@@ -93,7 +93,8 @@ services:
 
   vault-sync:
     image: alpine/git
-    command: ["sh", "/scripts/sync.sh"]
+    entrypoint: ["sh"]
+    command: ["/scripts/sync.sh"]
     environment:
       OBSIDIAN_GIT_REMOTE: ${OBSIDIAN_GIT_REMOTE}
     volumes:
@@ -113,6 +114,50 @@ services:
     networks: [flavor]
     restart: unless-stopped
 
+  voice-gateway:
+    build: ./infra/voice-gateway
+    container_name: voice-gateway
+    restart: unless-stopped
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      TIMEZONE: ${TIMEZONE:-America/New_York}
+      NATS_URL: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+      POSTGRES_URL: postgres://flavor:${POSTGRES_PASSWORD}@postgres:5432/flavor
+      TWILIO_STREAM_URL: ${TWILIO_STREAM_URL}
+      VOICE_REPLY_MODE: ${VOICE_REPLY_MODE:-test_tone}
+      VOICE_OPENING_MODE: ${VOICE_OPENING_MODE:-disabled}
+      VOICE_ACTIVE_AGENT: ${VOICE_ACTIVE_AGENT:-sinclair}
+      VOICE_STT_MODE: ${VOICE_STT_MODE:-openai_batch}
+      ELEVENLABS_MODEL_ID: ${ELEVENLABS_MODEL_ID:-eleven_flash_v2_5}
+      ELEVENLABS_API_KEY_FILE: /run/flavor/secrets/${VOICE_ACTIVE_AGENT:-sinclair}/elevenlabs.key
+      ELEVENLABS_VOICE_ID_FILE: /run/flavor/secrets/${VOICE_ACTIVE_AGENT:-sinclair}/elevenlabs.voice_id
+      OPENAI_API_KEY_FILE: /run/flavor/secrets/${VOICE_ACTIVE_AGENT:-sinclair}/openai_whisper.key
+      OPENAI_TRANSCRIBE_MODEL: ${OPENAI_TRANSCRIBE_MODEL:-whisper-1}
+      VAULT_PATH: /vault
+    volumes:
+      - ./vault:/vault
+      - ./workspace:/workspace
+      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
+      - secrets-tmpfs:/run/flavor/secrets:ro
+    depends_on:
+      - nats
+      - redis
+      - postgres
+      - khadijah
+      - sinclair
+    ports:
+      - "127.0.0.1:8088:8088"
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "flavoros_flavor"
+      traefik.http.routers.flavoros-voice.rule: "Host(`voice.flavoros.bairyos.com`)"
+      traefik.http.routers.flavoros-voice.entrypoints: "websecure"
+      traefik.http.routers.flavoros-voice.tls.certresolver: "letsencrypt"
+      traefik.http.services.flavoros-voice.loadbalancer.server.port: "8088"
+    networks: [flavor]
+
   # ── Agents ────────────────────────────────────────────────────────
   khadijah:
     <<: *agent-base
@@ -123,7 +168,7 @@ services:
       KHADIJAH_DOMAIN: ${KHADIJAH_DOMAIN}
     volumes:
       - ./vault:/vault
-      - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
       - ./agents/khadijah/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/khadijah/agent.yaml:/etc/flavoros/agent.yaml:ro
@@ -139,7 +184,7 @@ services:
       AGENT_ROLE: executive-assistant
     volumes:
       - ./vault:/vault
-      - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
       - ./agents/sinclair/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/sinclair/agent.yaml:/etc/flavoros/agent.yaml:ro
@@ -154,7 +199,7 @@ services:
       AGENT_ROLE: chief-operating-officer
     volumes:
       - ./vault:/vault
-      - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
       - ./agents/maxine/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/maxine/agent.yaml:/etc/flavoros/agent.yaml:ro
@@ -166,7 +211,7 @@ services:
     environment: { AGENT_NAME: kyle, AGENT_ROLE: chief-relationship-officer }
     volumes:
       - ./vault:/vault
-      - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
       - ./agents/kyle/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/kyle/agent.yaml:/etc/flavoros/agent.yaml:ro
@@ -178,7 +223,7 @@ services:
     environment: { AGENT_NAME: scooter, AGENT_ROLE: chief-logistics-officer }
     volumes:
       - ./vault:/vault
-      - ./CHIEF_OF_STAFF_CONTEXT.md:/etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md:ro
+      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
       - ./agents/scooter/SOUL.md:/etc/flavoros/SOUL.md:ro
       - ./workspace:/workspace
       - ./agents/scooter/agent.yaml:/etc/flavoros/agent.yaml:ro

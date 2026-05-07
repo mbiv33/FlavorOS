@@ -7,6 +7,7 @@ This repo now centers skills inside each active agent directory.
 - `chief-of-staff`
 - `khadijah-voice`
 - `obsidian-chief-of-staff`
+- `project-management-control`
 
 ## Maxine
 
@@ -15,6 +16,7 @@ This repo now centers skills inside each active agent directory.
 - `financial-management`
 - `infrastructure-ops`
 - `obsidian-operations`
+- `clickup-obsidian-project-management`
 
 Absorbed coverage:
 

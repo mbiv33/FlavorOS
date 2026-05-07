@@ -1,0 +1,346 @@
+schema_version: "1.0"
+generated_at: "2026-05-07"
+canonical_owner: "Maxine"
+product_orchestrator: "Khadijah"
+status_values:
+  - backlog
+  - ready
+  - in_progress
+  - blocked
+  - review
+  - done
+priority_values:
+  - P0
+  - P1
+  - P2
+  - P3
+clickup:
+  space: "FlavorOS"
+  folder: "MVP Delivery"
+  statuses:
+    - backlog
+    - ready
+    - in progress
+    - blocked
+    - review
+    - done
+obsidian:
+  dashboard: "planning/00-flavoros-mvp-delivery-system/OBSIDIAN_DASHBOARD.md"
+  kanban: "planning/00-flavoros-mvp-delivery-system/OBSIDIAN_KANBAN.md"
+workstreams:
+  - id: WS0
+    name: "Delivery Control Plane"
+    owner_agent: "maxine"
+  - id: WS1
+    name: "Agent Runtime"
+    owner_agent: "khadijah"
+  - id: WS2
+    name: "Voice Demo"
+    owner_agent: "sinclair"
+  - id: WS3
+    name: "Email Calendar Loop"
+    owner_agent: "sinclair"
+  - id: WS4
+    name: "UI UX Operator Console"
+    owner_agent: "khadijah"
+  - id: WS5
+    name: "Deployment Operations"
+    owner_agent: "scooter"
+  - id: WS6
+    name: "Beta and Beyond"
+    owner_agent: "khadijah"
+tasks:
+  - id: FOS-MVP-001
+    title: "Create canonical MVP delivery plan"
+    phase: "Phase 0"
+    workstream: "WS0"
+    status: done
+    priority: P0
+    owner_agent: "maxine"
+    system_area: "planning"
+    due: "2026-05-07"
+    dependencies: []
+    acceptance_criteria:
+      - "Project plan names MVP, beta, and beyond phases."
+      - "Plan includes UI/UX and agent-first priorities."
+    verification: "Document exists in planning folder."
+    external_action_risk: false
+  - id: FOS-MVP-002
+    title: "Create agent-readable YAML task map"
+    phase: "Phase 0"
+    workstream: "WS0"
+    status: done
+    priority: P0
+    owner_agent: "maxine"
+    system_area: "planning"
+    due: "2026-05-07"
+    dependencies: ["FOS-MVP-001"]
+    acceptance_criteria:
+      - "Task map has phases, workstreams, owners, dependencies, acceptance criteria, and verification."
+    verification: "YAML parses successfully."
+    external_action_risk: false
+  - id: FOS-MVP-003
+    title: "Create ClickUp import projection"
+    phase: "Phase 0"
+    workstream: "WS0"
+    status: done
+    priority: P1
+    owner_agent: "maxine"
+    system_area: "planning"
+    due: "2026-05-07"
+    dependencies: ["FOS-MVP-002"]
+    acceptance_criteria:
+      - "CSV can be imported or mapped into ClickUp custom fields."
+    verification: "CSV file exists with header and core tasks."
+    external_action_risk: false
+  - id: FOS-MVP-004
+    title: "Create Obsidian dashboard and Kanban views"
+    phase: "Phase 0"
+    workstream: "WS0"
+    status: done
+    priority: P1
+    owner_agent: "maxine"
+    system_area: "obsidian"
+    due: "2026-05-07"
+    dependencies: ["FOS-MVP-002"]
+    acceptance_criteria:
+      - "Dashboard contains Dataview-ready queries."
+      - "Kanban board contains MVP tasks grouped by status."
+    verification: "Markdown views exist in planning folder."
+    external_action_risk: false
+  - id: FOS-MVP-005
+    title: "Stand up temporary VPS dev-agent report paths"
+    phase: "Phase 1"
+    workstream: "WS1"
+    status: in_progress
+    priority: P0
+    owner_agent: "scooter"
+    system_area: "vps-agents"
+    due: "2026-05-08"
+    dependencies: ["FOS-MVP-002"]
+    acceptance_criteria:
+      - "Runtime report directory exists in repo and is ready to mirror on VPS."
+      - "Agent 1, Agent 2, and Agent 3 report templates are ready."
+    verification: "No-secret report files appear under docs/dev_context/runtime/."
+    external_action_risk: false
+  - id: FOS-MVP-006
+    title: "Normalize work order payload shape in runtime docs and code"
+    phase: "Phase 1"
+    workstream: "WS1"
+    status: ready
+    priority: P0
+    owner_agent: "khadijah"
+    system_area: "agent-runtime"
+    due: "2026-05-08"
+    dependencies: ["FOS-MVP-005"]
+    acceptance_criteria:
+      - "Work orders include work_order_id, source, target_agent, task_type, deliverable, vault_path, priority, and approval flag."
+      - "Compatibility payload still works with current agent runtime."
+    verification: "Synthetic work order produces a report without schema loss."
+    external_action_risk: false
+  - id: FOS-MVP-007
+    title: "Normalize specialist report shape"
+    phase: "Phase 1"
+    workstream: "WS1"
+    status: ready
+    priority: P0
+    owner_agent: "khadijah"
+    system_area: "agent-runtime"
+    due: "2026-05-08"
+    dependencies: ["FOS-MVP-006"]
+    acceptance_criteria:
+      - "Reports include status, summary, vault_file, user_facing_response, and requires_approval."
+    verification: "Synthetic report is accepted by a human-facing agent path."
+    external_action_risk: false
+  - id: FOS-MVP-008
+    title: "Create durable artifact writer for readiness outputs"
+    phase: "Phase 1"
+    workstream: "WS1"
+    status: backlog
+    priority: P0
+    owner_agent: "maxine"
+    system_area: "vault"
+    due: "2026-05-09"
+    dependencies: ["FOS-MVP-007"]
+    acceptance_criteria:
+      - "Runtime can create a readiness artifact from a work order or live deferral."
+      - "Artifact path is returned in the report."
+    verification: "Fake request creates a vault/15-Readiness markdown file."
+    external_action_risk: false
+  - id: FOS-MVP-009
+    title: "Connect voice gateway to Hermes-aware response path"
+    phase: "Phase 2"
+    workstream: "WS2"
+    status: ready
+    priority: P0
+    owner_agent: "sinclair"
+    system_area: "voice-gateway"
+    due: "2026-05-09"
+    dependencies: ["FOS-MVP-006"]
+    acceptance_criteria:
+      - "Voice response path can choose Sinclair or Khadijah."
+      - "Response policy can defer work when context is insufficient."
+    verification: "Phone or synthetic WebSocket test returns a non-static policy response."
+    external_action_risk: false
+  - id: FOS-MVP-010
+    title: "Add live voice deferred work artifact creation"
+    phase: "Phase 2"
+    workstream: "WS2"
+    status: backlog
+    priority: P0
+    owner_agent: "sinclair"
+    system_area: "voice-gateway"
+    due: "2026-05-09"
+    dependencies: ["FOS-MVP-008", "FOS-MVP-009"]
+    acceptance_criteria:
+      - "Unknown or work-heavy voice request creates readiness artifact."
+      - "Caller receives a concise deferral."
+    verification: "Fake transcript creates readiness file and sends spoken deferral."
+    external_action_risk: false
+  - id: FOS-MVP-011
+    title: "Test interruption and barge-in behavior"
+    phase: "Phase 2"
+    workstream: "WS2"
+    status: backlog
+    priority: P1
+    owner_agent: "scooter"
+    system_area: "voice-gateway"
+    due: "2026-05-10"
+    dependencies: ["FOS-MVP-009"]
+    acceptance_criteria:
+      - "Clear and mark behavior is documented."
+      - "At least one interruption test is captured."
+    verification: "Endpoint test report records pass/fail and fix notes."
+    external_action_risk: false
+  - id: FOS-MVP-012
+    title: "Create Khadijah and Sinclair demo briefing script"
+    phase: "Phase 2"
+    workstream: "WS2"
+    status: backlog
+    priority: P1
+    owner_agent: "khadijah"
+    system_area: "demo"
+    due: "2026-05-10"
+    dependencies: ["FOS-MVP-009"]
+    acceptance_criteria:
+      - "Script shows Khadijah briefing and Sinclair impromptu support."
+      - "Script includes a deferred specialist handoff moment."
+    verification: "Demo script artifact exists and is referenced by voice plan."
+    external_action_risk: false
+  - id: FOS-MVP-013
+    title: "Connect Marcus test email read path"
+    phase: "Phase 3"
+    workstream: "WS3"
+    status: backlog
+    priority: P0
+    owner_agent: "sinclair"
+    system_area: "gmail"
+    due: "2026-05-10"
+    dependencies: ["FOS-MVP-006"]
+    acceptance_criteria:
+      - "Test email can be read without exposing secrets."
+      - "No external send is enabled by default."
+    verification: "No-value connector health report exists."
+    external_action_risk: false
+  - id: FOS-MVP-014
+    title: "Connect Marcus test calendar read/proposal path"
+    phase: "Phase 3"
+    workstream: "WS3"
+    status: backlog
+    priority: P0
+    owner_agent: "sinclair"
+    system_area: "calendar"
+    due: "2026-05-10"
+    dependencies: ["FOS-MVP-006"]
+    acceptance_criteria:
+      - "Calendar availability can be inspected or mocked safely."
+      - "Proposals remain artifacts until approved."
+    verification: "Calendar handling artifact generated from fake or test event."
+    external_action_risk: true
+  - id: FOS-MVP-015
+    title: "Build email-to-artifacts demo flow"
+    phase: "Phase 3"
+    workstream: "WS3"
+    status: backlog
+    priority: P0
+    owner_agent: "sinclair"
+    system_area: "email-calendar-demo"
+    due: "2026-05-11"
+    dependencies: ["FOS-MVP-008", "FOS-MVP-013", "FOS-MVP-014"]
+    acceptance_criteria:
+      - "One inbound email generates SIGMA, draft reply, calendar artifact, PM artifact, and follow-up update."
+    verification: "All five artifacts exist in vault paths."
+    external_action_risk: true
+  - id: FOS-MVP-016
+    title: "Define MVP operator console information architecture"
+    phase: "Phase 4"
+    workstream: "WS4"
+    status: ready
+    priority: P0
+    owner_agent: "khadijah"
+    system_area: "ui-ux"
+    due: "2026-05-09"
+    dependencies: ["FOS-MVP-001"]
+    acceptance_criteria:
+      - "Console shows agent status, active work orders, reports, approvals, and demo state."
+      - "UX is framed for non-technical operator clarity."
+    verification: "UI/UX spec artifact exists."
+    external_action_risk: false
+  - id: FOS-MVP-017
+    title: "Choose Cloudflare free-tier dashboard deployment path"
+    phase: "Phase 4"
+    workstream: "WS4"
+    status: backlog
+    priority: P1
+    owner_agent: "scooter"
+    system_area: "cloudflare"
+    due: "2026-05-10"
+    dependencies: ["FOS-MVP-016"]
+    acceptance_criteria:
+      - "Decision records Pages vs Workers and data source."
+      - "No secrets are exposed to the edge."
+    verification: "Decision log entry and deployment note exist."
+    external_action_risk: false
+  - id: FOS-MVP-018
+    title: "Build first read-only operator console"
+    phase: "Phase 4"
+    workstream: "WS4"
+    status: backlog
+    priority: P1
+    owner_agent: "maxine"
+    system_area: "ui-ux"
+    due: "2026-05-13"
+    dependencies: ["FOS-MVP-016", "FOS-MVP-017"]
+    acceptance_criteria:
+      - "Console renders project status, agent status, and pending approvals."
+      - "Dashboard can be deployed without moving core runtime."
+    verification: "Local or Cloudflare preview is accessible."
+    external_action_risk: false
+  - id: FOS-MVP-019
+    title: "Create MVP release checklist"
+    phase: "Phase 5"
+    workstream: "WS5"
+    status: backlog
+    priority: P0
+    owner_agent: "scooter"
+    system_area: "deployment"
+    due: "2026-05-11"
+    dependencies: ["FOS-MVP-009", "FOS-MVP-015"]
+    acceptance_criteria:
+      - "Checklist covers compose, secrets, voice, artifacts, rollback, and demo script."
+    verification: "Release checklist exists and is dry-run reviewed."
+    external_action_risk: false
+  - id: FOS-MVP-020
+    title: "Prepare Christy beta onboarding plan"
+    phase: "Phase 6"
+    workstream: "WS6"
+    status: backlog
+    priority: P2
+    owner_agent: "khadijah"
+    system_area: "beta"
+    due: "2026-05-17"
+    dependencies: ["FOS-MVP-015", "FOS-MVP-019"]
+    acceptance_criteria:
+      - "Plan separates consent, OAuth, preferences, HITL rules, and first workflows."
+    verification: "Beta onboarding PRD or readiness artifact exists."
+    external_action_risk: true

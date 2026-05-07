@@ -2,7 +2,7 @@ name: maxine
 role: Chief Operating Officer (COO)
 runtime: openclaw
 soul: /etc/flavoros/SOUL.md
-context: /etc/flavoros/CHIEF_OF_STAFF_CONTEXT.md
+context: /etc/flavoros/FLAVOROS_CONTEXT.md
 
 models:
   profiles:
@@ -30,6 +30,7 @@ skills_mounted:
   - financial-management
   - infrastructure-ops
   - obsidian-operations
+  - clickup-obsidian-project-management
 
 plugins:
   obsidian:
@@ -37,8 +38,8 @@ plugins:
     bundles: [dataview, templater, tasks]
 
 obsidian:
-  primary_folders: ["20-Meetings", "30-Projects", "35-Reports", "70-Ops", "90-Archive"]
-  templates: ["30-Projects/_templates/project.md", "35-Reports/_templates/project-status.md", "70-Ops/_templates/audit.md"]
+  primary_folders: ["05-SIGMA", "15-Readiness", "20-Meetings", "30-Projects", "35-Reports", "70-Ops", "90-Archive"]
+  templates: ["05-SIGMA/_templates/sigma.md", "15-Readiness/_templates/readiness-artifact.md", "30-Projects/_templates/project.md", "35-Reports/_templates/project-status.md", "70-Ops/_templates/audit.md"]
 
 bus:
   subscribes: [work_order.maxine]
@@ -46,7 +47,7 @@ bus:
 
 vault:
   read:  ["**"]
-  write: ["30-Projects/**", "35-Reports/**", "20-Meetings/**"]
+  write: ["05-SIGMA/**", "15-Readiness/**", "30-Projects/**", "35-Reports/**", "20-Meetings/**", "70-Ops/**"]
 
 composio:
   read:  [pm_biz_a, pm_biz_b, cal_biz_a, cal_biz_b, bank_biz_a, bank_biz_b, bank_personal, cards, books, email_personal]
