@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir psycopg[binary] nats-py uvicorn starlette
+RUN pip install --no-cache-dir psycopg[binary] nats-py uvicorn starlette httpx
 
 COPY app /app/app
 
