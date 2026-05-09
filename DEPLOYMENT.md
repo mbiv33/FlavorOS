@@ -1,268 +1,154 @@
 # FlavorOS Deployment Protocol
 
-Zero-generation deployment. Nothing to fill in at deploy time except the `.env` values and your encrypted secrets blob.
+## Current Deployment Decision
 
----
+The repo is the source of truth for FlavorOS prompts, skills, protocols, shared context, app code, schema, and deployment support files.
 
-## Prerequisites
+The repo does **not** currently deploy the real agents as Python containers.
 
-| Requirement | Minimum |
-|---|---|
-| VPS | 4 vCPU, 8 GB RAM, 80 GB SSD (Hostinger KVM VPS or equivalent with full root + Docker access) |
-| Docker Engine | 24.0+ |
-| Docker Compose | v2.20+ (plugin, not standalone) |
-| Git | 2.x |
-| SOPS | 3.8+ |
-| age | 1.1+ |
+For the current VPS phase, the actual agent runtimes are Hostinger-managed containers:
 
-> **Hostinger note**: The "Container" hosting tier only supports a single container. You need a **KVM VPS** plan (VPS 2 or higher) to get full root access and install Docker yourself.
+| Agent | Runtime | VPS container | Data root |
+|---|---|---|---|
+| Khadijah | Hermes | `hermes-agent-kxed-hermes-agent-1` | `/docker/hermes-agent-kxed/data` |
+| Sinclair | Hermes | `hermes-agent-isuk-hermes-agent-1` | `/docker/hermes-agent-isuk/data` |
+| Maxine | OpenClaw | `openclaw-pn8l-openclaw-1` | `/docker/openclaw-pn8l/data` |
 
----
+Scooter and Kyle remain part of the product design, but they are not deployed as real Hostinger runtimes yet.
 
-## Directory Shipped in Git
+The old repo-owned `khadijah`, `sinclair`, `maxine`, `scooter`, and `kyle` Python containers were scaffolding. Do not redeploy them as the agent runtime.
 
-```
-FlavorOS/
-├── docker-compose.yml          # full stack definition
-├── .env.example                # copy to .env, fill in 3 values
-├── FLAVOROS_CONTEXT.md   # shared context for all agents
-├── agents/
-│   ├── khadijah/   (SOUL.md, agent.yaml, skills/)
-│   ├── sinclair/   (SOUL.md, agent.yaml, skills/)
-│   ├── maxine/     (SOUL.md, agent.yaml, skills/)
-│   ├── kyle/       (SOUL.md, agent.yaml, skills/)
-│   └── scooter/    (SOUL.md, agent.yaml, skills/)
-├── infra/
-│   ├── agent-base/        (Dockerfile, agent.py — shared image)
-│   ├── secrets-loader/    (Dockerfile, entrypoint.sh)
-│   ├── openrouter-proxy/  (Dockerfile, proxy logic)
-│   ├── composio-init/     (Dockerfile, init.py — run once)
-│   ├── scheduler/         (Dockerfile, cron runner)
-│   ├── secrets/           (.sops.yaml, secrets.enc.yaml)
-│   ├── openrouter.yaml    (model routing config)
-│   ├── composio.yaml      (account grants)
-│   ├── obsidian.yaml      (vault permissions)
-│   └── voice.yaml         (ElevenLabs config)
-├── cron/schedules.yaml
-├── vault/                  (Obsidian vault — git-synced)
-└── workspace/              (active task files)
-```
+## Repo-Owned Services
 
----
+`docker-compose.yml` owns shared infrastructure and app surfaces only:
 
-## Step-by-Step Deploy
+- `nats`
+- `redis`
+- `postgres`
+- `secrets-loader`
+- `openrouter-proxy`
+- `scheduler`
+- `app-api`
+- `app-ui`
+- `voice-gateway`
+- optional `vault-sync`
+- optional one-shot `composio-init`
 
-### 1. Provision VPS
+The repo-owned services support storage, transport, app visibility, and provider/API integration. They do not replace Hermes or OpenClaw.
+
+## Hostinger Agent Sync
+
+Run from the repo root on the VPS:
 
 ```bash
-# SSH into your Hostinger KVM VPS
-ssh root@your-vps-ip
-
-# Install Docker
-curl -fsSL https://get.docker.com | sh
-systemctl enable --now docker
-
-# Install Docker Compose plugin (included in modern Docker, verify)
-docker compose version
+bash deploy/hostinger-agents/sync-agent-bundles.sh
 ```
 
-### 2. Clone Repo
+The sync copies the current repo agent bundles into the persistent Hostinger data roots:
+
+- Khadijah -> `/docker/hermes-agent-kxed/data/flavoros`
+- Sinclair -> `/docker/hermes-agent-isuk/data/flavoros`
+- Maxine -> `/docker/openclaw-pn8l/data/flavoros`
+
+After syncing, configure each Hostinger runtime to use the corresponding `flavoros` folder as its active instruction/workspace source, then restart:
 
 ```bash
-git clone git@github.com:your-org/FlavorOS.git /opt/flavoros
-cd /opt/flavoros
+docker restart hermes-agent-kxed-hermes-agent-1
+docker restart hermes-agent-isuk-hermes-agent-1
+docker restart openclaw-pn8l-openclaw-1
 ```
 
-### 3. Generate Age Key (One-Time Only)
+## VPS Baseline
 
 ```bash
-mkdir -p /etc/flavoros
-age-keygen -o /etc/flavoros/age.key
-chmod 600 /etc/flavoros/age.key
-
-# Note the PUBLIC key — you'll need it for encrypting secrets locally
-cat /etc/flavoros/age.key | grep "public key"
+ssh root@2.24.65.59
+cd /home/deploy/apps/flavoros
+git status --short
+docker ps -a
+docker compose config --services
 ```
 
-### 4. Configure Environment
+Expected real agent containers:
+
+- `hermes-agent-kxed-hermes-agent-1`
+- `hermes-agent-isuk-hermes-agent-1`
+- `openclaw-pn8l-openclaw-1`
+- `traefik-traefik-1`
+
+Expected repo-owned compose services:
+
+- no `khadijah`
+- no `sinclair`
+- no `maxine`
+- no `scooter`
+- no `kyle`
+
+## Bring Up Repo-Owned Support Services
 
 ```bash
-cp .env.example .env
-nano .env
+cd /home/deploy/apps/flavoros
+docker compose up -d nats redis postgres secrets-loader openrouter-proxy scheduler app-api app-ui
 ```
 
-Fill in:
-- `KHADIJAH_DOMAIN` — your domain for the Telegram webhook (e.g., `flavor.yourdomain.com`)
-- `POSTGRES_PASSWORD` — strong random string
-- `OBSIDIAN_GIT_REMOTE` — your vault repo SSH URL
-
-### 5. Encrypt Secrets (On Your Local Machine)
+For voice support:
 
 ```bash
-# Copy the secrets template
-cp infra/secrets/secrets.example.yaml infra/secrets/secrets.yaml
-
-# Fill in your actual API keys
-nano infra/secrets/secrets.yaml
-
-# Encrypt with SOPS (uses .sops.yaml creation rules)
-sops --encrypt --in-place infra/secrets/secrets.yaml
-mv infra/secrets/secrets.yaml infra/secrets/secrets.enc.yaml
-
-# Verify: should show encrypted blob, not plaintext
-head infra/secrets/secrets.enc.yaml
+docker compose up -d voice-gateway
 ```
 
-### 6. Deploy Infrastructure
+For vault sync only after SSH host keys and vault remote access are configured:
 
 ```bash
-docker compose up -d nats redis postgres openrouter-proxy secrets-loader vault-sync scheduler
+docker compose up -d vault-sync
 ```
 
-Wait for secrets-loader health:
-```bash
-docker compose logs -f secrets-loader
-# Look for per-agent secret output for khadijah, sinclair, maxine, scooter, and kyle
-```
-
-### 7. Bootstrap OAuth (One-Time Only)
+## Verify Support Services
 
 ```bash
-docker compose run --rm composio-init
-# Follow the interactive prompts — scan QR codes for each OAuth account
-# Connection IDs are written back to the encrypted secrets file
-```
-
-### 8. Deploy All Agents
-
-```bash
-docker compose up -d khadijah sinclair maxine kyle scooter
-```
-
-### 9. Verify
-
-```bash
-# All containers running
 docker compose ps
-
-# Check agent logs
-docker compose logs khadijah --tail 20
-docker compose logs sinclair --tail 20
-
-# Test NATS connectivity
-docker compose exec nats nats-server --signal ldm
-
-# Verify Khadijah responds on Telegram
-# Send a test message to your bot
+docker compose logs --tail=50 app-api
+curl http://127.0.0.1:8091/health
+curl http://127.0.0.1:8091/api/dashboard-state
 ```
 
----
+Expected:
 
-## Per-Agent Deployment Anatomy
+- `app-api` connects to Postgres
+- `app-api` can reach NATS
+- `app-api` sees `/vault`
+- dashboard state returns JSON
 
-Every agent deploys identically. Zero per-agent generation is required because:
+## Gmail MVP Pull Path
 
-| Layer | Source | Mounted As |
-|---|---|---|
-| Runtime code | `infra/agent-base/` (shared image) | Built once, used by all |
-| Personality | `agents/<name>/SOUL.md` | `/etc/flavoros/SOUL.md` |
-| Config | `agents/<name>/agent.yaml` | `/etc/flavoros/agent.yaml` |
-| Skills | `agents/<name>/skills/` | `/skills` |
-| Secrets | `secrets-tmpfs` (decrypted at boot) | `/run/flavor/secrets` |
-| Vault | `./vault` | `/vault` |
-| Context | `FLAVOROS_CONTEXT.md` | `/etc/flavoros/FLAVOROS_CONTEXT.md` |
-
-To add a new agent:
-1. Create `agents/<name>/SOUL.md`
-2. Create `agents/<name>/agent.yaml`
-3. Create `agents/<name>/skills/` directory with skill bundles
-4. Add service block to `docker-compose.yml` (copy any existing agent block, change name)
-5. Add NATS subscription in agent.yaml
-6. `docker compose up -d <name>`
-
----
-
-## Agent Roster (All 5)
-
-| Agent | Role | Runtime | Primary Model | Bus Topic |
-|---|---|---|---|---|
-| khadijah | Chief of Staff | hermes | claude-sonnet-4.6 | `work_order.khadijah` |
-| sinclair | Executive Assistant | hermes | claude-sonnet-4.6 / gpt-5.4-mini | `work_order.sinclair` |
-| maxine | COO | openclaw | claude-sonnet-4.6 / gpt-5.4-mini | `work_order.maxine` |
-| kyle | CRO | openclaw | claude-sonnet-4.6 / gpt-5.4-mini | `work_order.kyle` |
-| scooter | CLO | openclaw | claude-sonnet-4.6 / gpt-5.4-mini | `work_order.scooter` |
-
-Retired standalone agents are preserved as skills/persona packs inside active agents:
-
-- Watson is inside Sinclair.
-- Regine is inside Kyle.
-- Overton is split across Maxine and Scooter.
-
----
-
-## Operations
-
-### Update an Agent's Personality or Skills
+After `app-api` is healthy and the Gmail token secret is mounted:
 
 ```bash
-# Edit the soul or skills locally, push to git, then on VPS:
-git pull
-docker compose restart <agent-name>
+curl -X POST "http://127.0.0.1:8091/api/providers/gmail/sync?max_results=5&query=newer_than:7d"
 ```
 
-### Rotate Secrets
+Expected MVP path:
+
+1. Gmail messages become `provider_events`.
+2. Messages normalize into `normalized_items`.
+3. `app-api` stages work for Sinclair.
+4. Hostinger Sinclair handles the real agent work once its runtime is pointed at the synced repo bundle.
+5. Reports and artifacts are persisted through repo-owned support services.
+
+## Dee Guard
+
+Before deployment, architecture, or file changes in this repo:
 
 ```bash
-# On local machine:
-sops infra/secrets/secrets.enc.yaml   # edit encrypted file in-place
-git add infra/secrets/secrets.enc.yaml && git commit -m "rotate keys"
-git push
-
-# On VPS:
-git pull
-docker compose restart secrets-loader
-# All agents pick up new secrets on their next request (read from tmpfs)
+bash scripts/dee-prechange-check.sh --ack
+bash scripts/dee-prechange-check.sh
 ```
 
-### Scale Down (Disable an Agent)
+Use `--ack` only after `/itc` has been run and current canon drift has been named.
 
-```bash
-docker compose stop <agent-name>
-# Agent is offline but config remains; `docker compose up -d <name>` brings it back
-```
+## Never Do
 
-### Full Stack Restart
-
-```bash
-docker compose down
-docker compose up -d
-```
-
-### View Logs
-
-```bash
-docker compose logs -f                    # all containers
-docker compose logs -f khadijah sinclair  # specific agents
-```
-
----
-
-## Health Checks
-
-| Check | Command | Healthy Signal |
-|---|---|---|
-| All running | `docker compose ps` | All services "Up" |
-| Secrets loaded | `docker compose exec secrets-loader ls /run/flavor/secrets/` | Per-agent dirs present |
-| NATS connected | `docker compose logs nats \| tail -5` | "Listening for client connections" |
-| Khadijah alive | Send Telegram message | Response within 30s |
-| Vault synced | `docker compose logs vault-sync \| tail -5` | "sync complete" |
-
----
-
-## Hostinger-Specific Notes
-
-1. **Plan**: You need **KVM VPS 2** or higher (4 vCPU / 8 GB). The "Container" or "Web Hosting" tiers do not support running your own Docker daemon.
-2. **Firewall**: Open ports 443 (Khadijah webhook via Caddy) and 22 (SSH). All inter-container traffic stays on the Docker bridge network.
-3. **Storage**: 80 GB SSD is comfortable for 13 containers + Obsidian vault + Postgres. Monitor with `df -h`.
-4. **Backups**: Enable Hostinger's weekly VPS snapshots. Additionally, the vault is git-synced and Postgres can be backed up with `pg_dump` via cron.
-5. **Domain**: Point your domain's A record to the VPS IP. Caddy (if added) handles TLS automatically via Let's Encrypt.
+- Do not redeploy the old repo-owned Python agent containers.
+- Do not run `docker compose up -d khadijah sinclair maxine scooter kyle`.
+- Do not treat running containers as proof the agents are current.
+- Do not rotate provider keys outside `docs/runbooks/STACK_API_PROTOCOL.md`.
+- Do not print secret values in logs, docs, or chat.

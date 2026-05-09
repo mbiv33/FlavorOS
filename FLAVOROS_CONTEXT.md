@@ -8,21 +8,22 @@ It is not a user profile and it must not become a dumping ground for personal pr
 
 - Product: FlavorOS
 - Category: voice-first, multi-agent executive operating system
-- Deployment model: VPS-hosted, containerized, hub-and-spoke runtime
+- Deployment model: VPS-hosted support services plus Hostinger-managed Hermes/OpenClaw agent runtimes
 - Current mission: ship the 12-hour MVP as fast as possible without breaking secrets or architecture canon
 
 ## Active Canon
 
-- Five active agents only: `khadijah`, `sinclair`, `maxine`, `scooter`, `kyle`
+- Five product agents only: `khadijah`, `sinclair`, `maxine`, `scooter`, `kyle`
 - Khadijah and Sinclair are the only human-facing agents
 - Maxine, Scooter, and Kyle are dark specialists
+- Current deployed real runtimes are Khadijah, Sinclair, and Maxine only
 - Regine, Watson, and Overton are persona/capability packs, not deployable agents
 - Every meaningful workflow should produce durable intelligence and prepared work product
 
 ## Runtime Topology
 
-- Human-facing runtime class: Hermes
-- Specialist runtime class: OpenClaw
+- Human-facing runtime class: Hostinger Hermes
+- Specialist runtime class: Hostinger OpenClaw
 - Bus: NATS
 - Hot state: Redis
 - Durable state and audit: Postgres
@@ -30,12 +31,14 @@ It is not a user profile and it must not become a dumping ground for personal pr
 - Secret distribution: `secrets-loader` to `/run/flavor/secrets`
 - Model routing: `openrouter-proxy`
 - Live voice edge: `voice-gateway`
+- Repo-owned Python agent containers are stale scaffolding and must not be redeployed as the real agents
 
 ## Command Protocol
 
 - `/ctx`: load current session context from handoff docs and workspace state
 - `/itc`: activate Product IT Director mode, resume from the last stopping point, and generate the current completed/next todo list
 - `/ctl`: close the loop, update handoff docs, verify directive consistency, and regenerate the latest snapshot
+- before changes: run `/itc`, then `bash scripts/dee-prechange-check.sh --ack`, then `bash scripts/dee-prechange-check.sh`
 
 ## Routing Model
 

@@ -1,26 +1,3 @@
-x-agent-base: &agent-base
-  restart: unless-stopped
-  build: ./infra/agent-base
-  environment:
-    NATS_URL: nats://nats:4222
-    REDIS_URL: redis://redis:6379
-    POSTGRES_URL: postgres://flavor:${POSTGRES_PASSWORD}@postgres:5432/flavor
-    OPENROUTER_BASE_URL: http://openrouter-proxy:8080/v1
-    VAULT_PATH: /vault
-    SECRETS_DIR: /run/flavor/secrets
-  volumes:
-    - ./vault:/vault
-    - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
-    - ./workspace:/workspace
-    - secrets-tmpfs:/run/flavor/secrets:ro
-  depends_on:
-    nats:              { condition: service_started }
-    redis:             { condition: service_started }
-    postgres:          { condition: service_started }
-    openrouter-proxy:  { condition: service_started }
-    secrets-loader:    { condition: service_healthy }
-  networks: [flavor]
-
 services:
   # ── Infrastructure ─────────────────────────────────────────────────
   nats:
@@ -32,7 +9,7 @@ services:
   redis:
     image: redis:7-alpine
     networks: [flavor]
-    volumes: [redis-data:/data]
+    volumes: ["redis-data:/data"]
     restart: unless-stopped
 
   postgres:
@@ -41,7 +18,40 @@ services:
       POSTGRES_USER: flavor
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: flavor
-    volumes: [pg-data:/var/lib/postgresql/data]
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    networks: [flavor]
+    restart: unless-stopped
+
+  app-api:
+    build: ./infra/app-api
+    environment:
+      NATS_URL: nats://nats:4222
+      POSTGRES_URL: postgres://flavor:${POSTGRES_PASSWORD}@postgres:5432/flavor
+      FLAVOROS_CLIENT_ID: marcus
+      VAULT_PATH: /vault
+      GMAIL_ACCESS_TOKEN_FILE: /run/flavor/secrets/app-api/gmail.access_token
+    depends_on:
+      nats: { condition: service_started }
+      postgres: { condition: service_started }
+      secrets-loader: { condition: service_healthy }
+    volumes:
+      - ./vault:/vault
+      - secrets-tmpfs:/run/flavor/secrets:ro
+    ports:
+      - "127.0.0.1:8091:8091"
+    networks: [flavor]
+    restart: unless-stopped
+
+  app-ui:
+    image: nginx:alpine
+    volumes:
+      - ./app/ui:/usr/share/nginx/html:ro
+    depends_on:
+      app-api: { condition: service_started }
+    ports:
+      - "127.0.0.1:8090:80"
     networks: [flavor]
     restart: unless-stopped
 
@@ -145,8 +155,6 @@ services:
       - nats
       - redis
       - postgres
-      - khadijah
-      - sinclair
     ports:
       - "127.0.0.1:8088:8088"
     labels:
@@ -157,77 +165,6 @@ services:
       traefik.http.routers.flavoros-voice.tls.certresolver: "letsencrypt"
       traefik.http.services.flavoros-voice.loadbalancer.server.port: "8088"
     networks: [flavor]
-
-  # ── Agents ────────────────────────────────────────────────────────
-  khadijah:
-    <<: *agent-base
-    container_name: khadijah
-    environment:
-      AGENT_NAME: khadijah
-      AGENT_ROLE: chief-of-staff
-      KHADIJAH_DOMAIN: ${KHADIJAH_DOMAIN}
-    volumes:
-      - ./vault:/vault
-      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
-      - ./agents/khadijah/SOUL.md:/etc/flavoros/SOUL.md:ro
-      - ./workspace:/workspace
-      - ./agents/khadijah/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./infra/voice.yaml:/etc/flavoros/voice.yaml:ro
-      - ./agents/khadijah/skills:/skills:ro
-      - secrets-tmpfs:/run/flavor/secrets:ro
-
-  sinclair:
-    <<: *agent-base
-    container_name: sinclair
-    environment:
-      AGENT_NAME: sinclair
-      AGENT_ROLE: executive-assistant
-    volumes:
-      - ./vault:/vault
-      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
-      - ./agents/sinclair/SOUL.md:/etc/flavoros/SOUL.md:ro
-      - ./workspace:/workspace
-      - ./agents/sinclair/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./infra/sinclair-voice.yaml:/etc/flavoros/sinclair-voice.yaml:ro
-      - ./agents/sinclair/skills:/skills:ro
-
-  maxine:
-    <<: *agent-base
-    container_name: maxine
-    environment:
-      AGENT_NAME: maxine
-      AGENT_ROLE: chief-operating-officer
-    volumes:
-      - ./vault:/vault
-      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
-      - ./agents/maxine/SOUL.md:/etc/flavoros/SOUL.md:ro
-      - ./workspace:/workspace
-      - ./agents/maxine/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./agents/maxine/skills:/skills:ro
-
-  kyle:
-    <<: *agent-base
-    container_name: kyle
-    environment: { AGENT_NAME: kyle, AGENT_ROLE: chief-relationship-officer }
-    volumes:
-      - ./vault:/vault
-      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
-      - ./agents/kyle/SOUL.md:/etc/flavoros/SOUL.md:ro
-      - ./workspace:/workspace
-      - ./agents/kyle/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./agents/kyle/skills:/skills:ro
-
-  scooter:
-    <<: *agent-base
-    container_name: scooter
-    environment: { AGENT_NAME: scooter, AGENT_ROLE: chief-logistics-officer }
-    volumes:
-      - ./vault:/vault
-      - ./FLAVOROS_CONTEXT.md:/etc/flavoros/FLAVOROS_CONTEXT.md:ro
-      - ./agents/scooter/SOUL.md:/etc/flavoros/SOUL.md:ro
-      - ./workspace:/workspace
-      - ./agents/scooter/agent.yaml:/etc/flavoros/agent.yaml:ro
-      - ./agents/scooter/skills:/skills:ro
 
 volumes:
   redis-data:

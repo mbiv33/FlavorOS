@@ -31,6 +31,13 @@ skills_mounted:
   - infrastructure-ops
   - obsidian-operations
   - clickup-obsidian-project-management
+  - accounts-receivable-invoicing-lifecycle
+  - accounts-payable-expense-routing
+  - monthly-financial-reporting-synthesis
+  - pac-triage-and-logging
+  - ptq-resolution-engine
+  - project-initiation-milestone-mapping
+  - task-execution-status-monitoring
 
 plugins:
   obsidian:

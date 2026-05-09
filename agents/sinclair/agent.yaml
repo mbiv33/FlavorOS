@@ -33,6 +33,9 @@ skills_mounted:
   - wellness
   - sinclair-voice
   - obsidian-executive-assistant
+  - inbound-communications-draft-response
+  - meeting-lifecycle-time-guarding
+  - information-diet-boundary-defense
 
 plugins:
   obsidian:
@@ -43,18 +46,18 @@ plugins:
 
 obsidian:
   primary_folders: ["05-SIGMA", "15-Readiness", "20-Meetings", "35-Reports", "60-Wellness", "80-Journal", "90-Archive"]
-  templates: ["05-SIGMA/_templates/sigma.md", "15-Readiness/_templates/readiness-artifact.md", "20-Meetings/_templates/prep.md", "35-Reports/_templates/agent-report.md", "60-Wellness/_templates/perma-v-checkin.md"]
+  templates: ["05-SIGMA/_templates/sigma.md", "15-Readiness/_templates/readiness-artifact.md", "15-Readiness/_templates/universal-inbox-triage.md", "20-Meetings/_templates/prep.md", "20-Meetings/_templates/pending-scheduling.md", "35-Reports/_templates/agent-report.md", "60-Wellness/_templates/perma-v-checkin.md"]
 
 bus:
-  subscribes: [work_order.sinclair]
-  publishes:  [report.sinclair, flag.*]
+  subscribes: [work_order.sinclair, nots.incoming.comm.*, execute.sinclair.calendar, execute.sinclair.comms]
+  publishes:  [report.sinclair, event.inbox.triaged, request.approval.khadijah, flag.*]
 
 vault:
   read:  ["**"]
   write: ["05-SIGMA/**", "15-Readiness/**", "20-Meetings/**", "35-Reports/**", "60-Wellness/**"]
 
 composio:
-  read:  [email_biz_a, email_biz_b, email_personal, cal_biz_a, cal_biz_b, cal_personal]
+  read:  [email_biz_a, email_biz_b, email_personal, cal_biz_a, cal_biz_b, cal_personal, comms, social_li, social_x, sms_bridge]
   write: [email_biz_a, email_biz_b, email_personal, cal_biz_a, cal_biz_b, cal_personal]
 
 hitl:

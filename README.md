@@ -1,7 +1,7 @@
 # FlavorOS
 ## "Keeping it Professional. Keeping it Flavor."
 
-FlavorOS is a multi-agent executive operating system built around one hub and four specialist operators.
+FlavorOS is a multi-agent executive operating system built around human-facing Hermes agents, specialist OpenClaw agents, and a repo-owned support layer.
 
 Khadijah remains the primary conductor, and the owner can now work through Khadijah directly, Sinclair directly, or a shared group bot that includes both Hermes agents.
 
@@ -43,12 +43,18 @@ Every active agent has:
 
 ## Deployment Shape
 
-Operational staff:
+Operational staff target:
 
 - `khadijah`, `sinclair` = Hermes
 - `maxine`, `scooter`, `kyle` = OpenClaw
 
-That is five agent containers total, plus shared infra services.
+Current VPS reality:
+
+- Khadijah runs in the Hostinger Hermes container `hermes-agent-kxed-hermes-agent-1`.
+- Sinclair runs in the Hostinger Hermes container `hermes-agent-isuk-hermes-agent-1`.
+- Maxine runs in the Hostinger OpenClaw container `openclaw-pn8l-openclaw-1`.
+- Scooter and Kyle are product agents with repo-owned prompt/skill bundles, but they are not deployed as real Hostinger runtimes yet.
+- `docker-compose.yml` owns shared infrastructure and app services only. It must not deploy fake Python agent containers.
 
 Human-facing surfaces:
 
@@ -59,3 +65,13 @@ Human-facing surfaces:
 ## Core Principle
 
 The system handles identify, research, and draft. The owner handles approve, modify, or reject.
+
+## Syncing Real Agent Runtimes
+
+The repo owns prompts, skills, protocols, and shared context. The Hostinger containers are the current real runtimes.
+
+Run this on the VPS to sync repo bundles into the active Hostinger data roots:
+
+```bash
+bash deploy/hostinger-agents/sync-agent-bundles.sh
+```

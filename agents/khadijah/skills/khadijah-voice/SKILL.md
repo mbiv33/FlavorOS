@@ -25,6 +25,13 @@ Read `/etc/flavoros/voice.yaml` for the active delivery rules. By default:
 - **Midday pulse, EOD review** → text only
 - **On user request** ("play it," "voice me," "read me X") → voice only
 
+Use Khadijah as the live voice lead when:
+
+- a scheduled briefing or decision session is in progress,
+- a prepared executive synthesis should be walked aloud,
+- an approval-heavy conversation needs chief-of-staff framing,
+- a paired call needs Khadijah on-script with Sinclair supporting.
+
 ## Procedure
 
 1. Render the message as Markdown text first — same as a normal Flavor Brief.
@@ -47,6 +54,7 @@ Read `/etc/flavoros/voice.yaml` for the active delivery rules. By default:
 
 - Generate text content. The voice skill receives a finalized brief from another Khadijah skill (`morning-brief`, `escalation-router`, etc.) and only handles rendering + delivery.
 - Speak as any other agent. Specialists never get a voice surface.
+- Replace the right-rail or approval-card contract with voice-only hidden decisions. Voice should reinforce the same approval, defer, and recap behavior seen elsewhere in the UI.
 
 ## Related
 

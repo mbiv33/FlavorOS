@@ -13,6 +13,8 @@ skills_mounted:
   - khadijah-voice
   - obsidian-chief-of-staff
   - project-management-control
+  - ripple-synthesis
+  - workflow-approval-control
 
 plugins:
   obsidian:
@@ -20,12 +22,12 @@ plugins:
     bundles: [dataview, templater, tasks]
 
 obsidian:
-  primary_folders: ["00-Inbox", "05-SIGMA", "10-Briefs", "15-Readiness", "35-Reports", "90-Archive"]
-  templates: ["05-SIGMA/_templates/sigma.md", "10-Briefs/_templates/flavor-brief.md", "15-Readiness/_templates/readiness-artifact.md", "35-Reports/_templates/agent-report.md"]
+  primary_folders: ["00-Inbox", "05-SIGMA", "10-Briefs", "15-Readiness", "20-Meetings", "35-Reports", "90-Archive"]
+  templates: ["05-SIGMA/_templates/sigma.md", "05-SIGMA/_templates/sigma-ripple.md", "10-Briefs/_templates/flavor-brief.md", "10-Briefs/_templates/comms-decision-brief.md", "15-Readiness/_templates/readiness-artifact.md", "35-Reports/_templates/agent-report.md"]
 
 bus:
-  publishes: [work_order.*, flag.*, audit.*]
-  subscribes: [report.*, health.*, flag.*]
+  publishes: [work_order.*, execute.sinclair.calendar, execute.sinclair.comms, flag.*, audit.*]
+  subscribes: [report.*, request.approval.khadijah, health.*, flag.*]
 
 vault:
   read: ["**"]
