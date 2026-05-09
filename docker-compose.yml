@@ -32,6 +32,9 @@ services:
       FLAVOROS_CLIENT_ID: marcus
       VAULT_PATH: /vault
       GMAIL_ACCESS_TOKEN_FILE: /run/flavor/secrets/app-api/gmail.access_token
+      GMAIL_REFRESH_TOKEN_FILE: /run/flavor/secrets/app-api/gmail.refresh_token
+      GOOGLE_OAUTH_CLIENT_ID_FILE: /run/flavor/secrets/app-api/google.client_id
+      GOOGLE_OAUTH_CLIENT_SECRET_FILE: /run/flavor/secrets/app-api/google.client_secret
     depends_on:
       nats: { condition: service_started }
       postgres: { condition: service_started }

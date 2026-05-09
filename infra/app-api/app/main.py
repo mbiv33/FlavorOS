@@ -29,6 +29,12 @@ CLIENT_ID = os.getenv("FLAVOROS_CLIENT_ID", "marcus")
 VAULT_PATH = Path(os.getenv("VAULT_PATH", "/vault"))
 GMAIL_ACCESS_TOKEN = os.getenv("GMAIL_ACCESS_TOKEN", "")
 GMAIL_ACCESS_TOKEN_FILE = os.getenv("GMAIL_ACCESS_TOKEN_FILE", "")
+GMAIL_REFRESH_TOKEN = os.getenv("GMAIL_REFRESH_TOKEN", "")
+GMAIL_REFRESH_TOKEN_FILE = os.getenv("GMAIL_REFRESH_TOKEN_FILE", "")
+GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID", "")
+GOOGLE_OAUTH_CLIENT_ID_FILE = os.getenv("GOOGLE_OAUTH_CLIENT_ID_FILE", "")
+GOOGLE_OAUTH_CLIENT_SECRET = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET", "")
+GOOGLE_OAUTH_CLIENT_SECRET_FILE = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET_FILE", "")
 WORK_ORDER_SCHEMA_VERSION = "flavoros.work_order.v1"
 
 
@@ -229,6 +235,142 @@ async def execute(query: str, params: tuple = ()) -> None:
         await cur.execute(query, params)
 
 
+async def get_provider_connection(provider: str) -> dict | None:
+    return await fetch_one(
+        """
+        SELECT provider_connection_id, account_alias, connection_status
+        FROM provider_connections
+        WHERE client_id = %s AND provider = %s
+        ORDER BY created_at ASC
+        LIMIT 1
+        """,
+        (CLIENT_ID, provider),
+    )
+
+
+async def mark_provider_sync_success(provider_connection_id: str) -> None:
+    await execute(
+        """
+        UPDATE provider_connections
+        SET connection_status = 'healthy',
+            last_sync_at = NOW(),
+            last_error_at = NULL,
+            last_error_summary = NULL,
+            updated_at = NOW()
+        WHERE provider_connection_id = %s
+        """,
+        (provider_connection_id,),
+    )
+
+
+async def mark_provider_sync_error(provider_connection_id: str | None, summary: str) -> None:
+    if not provider_connection_id:
+        return
+    await execute(
+        """
+        UPDATE provider_connections
+        SET last_error_at = NOW(),
+            last_error_summary = %s,
+            updated_at = NOW()
+        WHERE provider_connection_id = %s
+        """,
+        (summary[:500], provider_connection_id),
+    )
+
+
+async def upsert_oauth_account_status(
+    *,
+    provider_connection_id: str,
+    scopes: list[str] | None = None,
+    token_expires_at: str | None = None,
+    refresh_status: str = "unknown",
+) -> None:
+    oauth_account_id = f"oauth-{provider_connection_id}"
+    await execute(
+        """
+        INSERT INTO oauth_accounts (
+            oauth_account_id, provider_connection_id, scopes_json, token_expires_at, refresh_status
+        )
+        VALUES (%s, %s, %s::jsonb, %s::timestamptz, %s)
+        ON CONFLICT (oauth_account_id) DO UPDATE
+        SET scopes_json = EXCLUDED.scopes_json,
+            token_expires_at = EXCLUDED.token_expires_at,
+            refresh_status = EXCLUDED.refresh_status,
+            updated_at = NOW()
+        """,
+        (
+            oauth_account_id,
+            provider_connection_id,
+            json.dumps(scopes or []),
+            token_expires_at,
+            refresh_status,
+        ),
+    )
+
+
+async def get_gmail_access_token() -> str:
+    direct_access_token = read_secret_value(GMAIL_ACCESS_TOKEN, GMAIL_ACCESS_TOKEN_FILE)
+    refresh_token = read_secret_value(GMAIL_REFRESH_TOKEN, GMAIL_REFRESH_TOKEN_FILE)
+    oauth_client_id = read_secret_value(GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_ID_FILE)
+    oauth_client_secret = read_secret_value(GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_OAUTH_CLIENT_SECRET_FILE)
+    provider_connection = await get_provider_connection("gmail")
+    provider_connection_id = provider_connection["provider_connection_id"] if provider_connection else None
+
+    if refresh_token and oauth_client_id and oauth_client_secret:
+        async with httpx.AsyncClient(timeout=30) as client:
+            token_resp = await client.post(
+                "https://oauth2.googleapis.com/token",
+                data={
+                    "client_id": oauth_client_id,
+                    "client_secret": oauth_client_secret,
+                    "refresh_token": refresh_token,
+                    "grant_type": "refresh_token",
+                },
+            )
+            token_resp.raise_for_status()
+            token_data = token_resp.json()
+
+        expires_in = token_data.get("expires_in")
+        expires_at = None
+        if isinstance(expires_in, int):
+            expires_at = datetime.fromtimestamp(
+                datetime.now(timezone.utc).timestamp() + expires_in,
+                tz=timezone.utc,
+            ).isoformat()
+
+        if provider_connection_id:
+            await upsert_oauth_account_status(
+                provider_connection_id=provider_connection_id,
+                scopes=token_data.get("scope", "").split(),
+                token_expires_at=expires_at,
+                refresh_status="healthy",
+            )
+
+        return token_data["access_token"]
+
+    if direct_access_token:
+        if provider_connection_id:
+            await upsert_oauth_account_status(
+                provider_connection_id=provider_connection_id,
+                scopes=[],
+                token_expires_at=None,
+                refresh_status="access_token_only",
+            )
+        return direct_access_token
+
+    if provider_connection_id:
+        await upsert_oauth_account_status(
+            provider_connection_id=provider_connection_id,
+            scopes=[],
+            token_expires_at=None,
+            refresh_status="missing_secret",
+        )
+
+    raise RuntimeError(
+        "gmail OAuth not configured: provide app-api gmail refresh token + Google OAuth client credentials, or a temporary gmail access token"
+    )
+
+
 async def persist_gmail_message(
     *,
     external_message_id: str,
@@ -240,15 +382,7 @@ async def persist_gmail_message(
     occurred_at: str | None,
     raw_payload: dict,
 ) -> dict:
-    provider_connection = await fetch_one(
-        """
-        SELECT provider_connection_id
-        FROM provider_connections
-        WHERE client_id = %s AND provider = 'gmail'
-        LIMIT 1
-        """,
-        (CLIENT_ID,),
-    )
+    provider_connection = await get_provider_connection("gmail")
     if provider_connection is None:
         raise RuntimeError("gmail provider connection not found")
 
@@ -383,6 +517,7 @@ async def persist_gmail_message(
             "work_order.sinclair",
             json.dumps(work_order_message).encode(),
         )
+        log.info("published work order subject=work_order.sinclair work_order_id=%s", work_order_id)
 
     return {
         "ok": True,
@@ -394,52 +529,63 @@ async def persist_gmail_message(
 
 
 async def sync_gmail_messages(max_results: int = 5, query: str = "newer_than:7d") -> dict:
-    access_token = read_secret_value(GMAIL_ACCESS_TOKEN, GMAIL_ACCESS_TOKEN_FILE)
-    if not access_token:
-        raise RuntimeError("gmail access token not configured")
+    provider_connection = await get_provider_connection("gmail")
+    provider_connection_id = provider_connection["provider_connection_id"] if provider_connection else None
+    try:
+        access_token = await get_gmail_access_token()
+    except Exception as exc:
+        await mark_provider_sync_error(provider_connection_id, str(exc))
+        raise
 
     headers = {"Authorization": f"Bearer {access_token}"}
     async with httpx.AsyncClient(timeout=30) as client:
-        list_resp = await client.get(
-            "https://gmail.googleapis.com/gmail/v1/users/me/messages",
-            headers=headers,
-            params={"q": query, "maxResults": max_results},
-        )
-        list_resp.raise_for_status()
-        list_data = list_resp.json()
-
-        ingested = []
-        duplicates = 0
-        for message in list_data.get("messages", []):
-            msg_id = message["id"]
-            detail_resp = await client.get(
-                f"https://gmail.googleapis.com/gmail/v1/users/me/messages/{msg_id}",
+        try:
+            list_resp = await client.get(
+                "https://gmail.googleapis.com/gmail/v1/users/me/messages",
                 headers=headers,
-                params={"format": "full"},
+                params={"q": query, "maxResults": max_results},
             )
-            detail_resp.raise_for_status()
-            detail = detail_resp.json()
-            payload = detail.get("payload", {})
-            headers_map = gmail_headers_map(payload)
-            body_text = decode_gmail_body(payload) or detail.get("snippet", "")
-            from_header = headers_map.get("From", "")
-            sender_name = from_header.split("<")[0].strip().strip('"') or "Unknown Sender"
-            sender_email = from_header.split("<")[-1].rstrip(">").strip() if "<" in from_header else from_header
+            list_resp.raise_for_status()
+            list_data = list_resp.json()
 
-            result = await persist_gmail_message(
-                external_message_id=detail["id"],
-                external_thread_id=detail.get("threadId", detail["id"]),
-                subject=headers_map.get("Subject", "Untitled Gmail message"),
-                message_text=body_text,
-                sender_name=sender_name or "Unknown Sender",
-                sender_email=sender_email or "unknown@example.com",
-                occurred_at=gmail_internal_date_to_iso(detail.get("internalDate")),
-                raw_payload=detail,
-            )
-            if result.get("duplicate"):
-                duplicates += 1
-            else:
-                ingested.append(result)
+            ingested = []
+            duplicates = 0
+            for message in list_data.get("messages", []):
+                msg_id = message["id"]
+                detail_resp = await client.get(
+                    f"https://gmail.googleapis.com/gmail/v1/users/me/messages/{msg_id}",
+                    headers=headers,
+                    params={"format": "full"},
+                )
+                detail_resp.raise_for_status()
+                detail = detail_resp.json()
+                payload = detail.get("payload", {})
+                headers_map = gmail_headers_map(payload)
+                body_text = decode_gmail_body(payload) or detail.get("snippet", "")
+                from_header = headers_map.get("From", "")
+                sender_name = from_header.split("<")[0].strip().strip('"') or "Unknown Sender"
+                sender_email = from_header.split("<")[-1].rstrip(">").strip() if "<" in from_header else from_header
+
+                result = await persist_gmail_message(
+                    external_message_id=detail["id"],
+                    external_thread_id=detail.get("threadId", detail["id"]),
+                    subject=headers_map.get("Subject", "Untitled Gmail message"),
+                    message_text=body_text,
+                    sender_name=sender_name or "Unknown Sender",
+                    sender_email=sender_email or "unknown@example.com",
+                    occurred_at=gmail_internal_date_to_iso(detail.get("internalDate")),
+                    raw_payload=detail,
+                )
+                if result.get("duplicate"):
+                    duplicates += 1
+                else:
+                    ingested.append(result)
+        except httpx.HTTPError as exc:
+            await mark_provider_sync_error(provider_connection_id, str(exc))
+            raise
+
+    if provider_connection_id:
+        await mark_provider_sync_success(provider_connection_id)
 
     return {"ok": True, "ingested": ingested, "duplicates": duplicates}
 

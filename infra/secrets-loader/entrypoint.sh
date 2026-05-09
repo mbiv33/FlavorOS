@@ -34,6 +34,17 @@ mkdir -p "$shared_dir" && chmod 0700 "$shared_dir"
 echo "$PLAIN" | yq -r '.openrouter.api_key' > "$shared_dir/openrouter.key"
 chmod 0400 "$shared_dir/openrouter.key"
 
+# ── App API runtime secrets ───────────────────────────────────────
+app_api_dir="$OUT_DIR/app-api"
+mkdir -p "$app_api_dir" && chmod 0700 "$app_api_dir"
+ln -sf "$shared_dir/openrouter.key" "$app_api_dir/openrouter.key"
+echo "$PLAIN" | yq -r '.google.gmail_access_token // ""' > "$app_api_dir/gmail.access_token"
+echo "$PLAIN" | yq -r '.google.gmail_refresh_token // ""' > "$app_api_dir/gmail.refresh_token"
+echo "$PLAIN" | yq -r '.google.oauth_client_id // ""' > "$app_api_dir/google.client_id"
+echo "$PLAIN" | yq -r '.google.oauth_client_secret // ""' > "$app_api_dir/google.client_secret"
+chmod 0400 "$app_api_dir"/{openrouter.key,gmail.access_token,gmail.refresh_token,google.client_id,google.client_secret}
+echo "[secrets-loader] app-api: $(ls -1 "$app_api_dir" | wc -l) files"
+
 # ── Per-agent: filter Composio connection_ids by grants ──────────
 agents=(khadijah sinclair maxine scooter kyle)
 
