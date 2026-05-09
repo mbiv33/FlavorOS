@@ -1,0 +1,99 @@
+{
+  "providers": [
+    { "name": "Gmail", "status": "Healthy. Draft path enabled." },
+    { "name": "Google Calendar", "status": "Healthy. Proposal-only writes." },
+    { "name": "WhatsApp", "status": "Syncing. Reply lane not yet live." },
+    { "name": "Social DMs", "status": "Review mode. Provider choice pending." }
+  ],
+  "metrics": [
+    { "label": "Connected lanes", "value": 4 },
+    { "label": "Normalized inbox items", "value": 18 },
+    { "label": "Pending approvals", "value": 6 },
+    { "label": "Outbound actions", "value": 9 }
+  ],
+  "inbox": [
+    {
+      "title": "Investor intro thread needs a scheduling answer",
+      "copy": "Gmail thread normalized into a shared scheduling request with source thread and message ids preserved.",
+      "meta": "Route: Sinclair calendar",
+      "badges": [
+        { "label": "gmail", "tone": "" },
+        { "label": "requires response", "tone": "warn" }
+      ]
+    },
+    {
+      "title": "WhatsApp dinner follow-up looks relationship-sensitive",
+      "copy": "Conversation normalized with participant mapping and routed for relationship context before any reply is released.",
+      "meta": "Route: Kyle relationship",
+      "badges": [
+        { "label": "whatsapp", "tone": "" },
+        { "label": "approval likely", "tone": "alert" }
+      ]
+    },
+    {
+      "title": "Calendar move request arrived for Thursday briefing",
+      "copy": "Calendar event change was ingested as a proposal, not a committed schedule mutation.",
+      "meta": "Route: Sinclair calendar",
+      "badges": [
+        { "label": "calendar", "tone": "" },
+        { "label": "proposal only", "tone": "warn" }
+      ]
+    }
+  ],
+  "workOrders": [
+    {
+      "title": "WO-20260508-001 draft a reply recommendation",
+      "copy": "Sinclair is preparing a draft response and calendar handling artifact from a normalized Gmail item.",
+      "meta": "Deliverable: readiness artifact",
+      "badges": [
+        { "label": "sinclair", "tone": "" },
+        { "label": "in progress", "tone": "warn" }
+      ]
+    },
+    {
+      "title": "WO-20260508-002 enrich relationship context",
+      "copy": "Kyle is preparing context for a WhatsApp and social DM follow-up.",
+      "meta": "Deliverable: people brief",
+      "badges": [
+        { "label": "kyle", "tone": "" }
+      ]
+    }
+  ],
+  "approvals": [
+    {
+      "title": "Approve Gmail draft in original thread",
+      "copy": "Exact side effect: create a draft reply in the source thread without sending.",
+      "meta": "Owner: Khadijah",
+      "badges": [
+        { "label": "draft-only", "tone": "warn" }
+      ]
+    },
+    {
+      "title": "Approve calendar proposal update",
+      "copy": "Exact side effect: update an existing event with sendUpdates=none after review.",
+      "meta": "Owner: Khadijah",
+      "badges": [
+        { "label": "calendar", "tone": "" },
+        { "label": "approval required", "tone": "alert" }
+      ]
+    }
+  ],
+  "outbound": [
+    {
+      "title": "Gmail draft reply staged",
+      "copy": "Ready to write back to the original Gmail thread after approval.",
+      "meta": "Status: staged",
+      "badges": [
+        { "label": "gmail_reply_or_draft", "tone": "" }
+      ]
+    },
+    {
+      "title": "Calendar update waiting for receipt",
+      "copy": "Outbound action is modeled but not executed until approval and safe test path are confirmed.",
+      "meta": "Status: awaiting approval",
+      "badges": [
+        { "label": "calendar_event_update_or_proposal", "tone": "warn" }
+      ]
+    }
+  ]
+}

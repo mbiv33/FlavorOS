@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlavorOS</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">F</span>
+          <div>
+            <strong>FlavorOS</strong>
+            <small>Communications Operating App</small>
+          </div>
+        </div>
+        <nav class="nav">
+          <a class="active" href="#overview">Overview</a>
+          <a href="#inbox">Inbox</a>
+          <a href="#work-orders">Work Orders</a>
+          <a href="#approvals">Approvals</a>
+          <a href="#outbound">Outbound</a>
+        </nav>
+        <div class="sidebar-card">
+          <p class="eyebrow">Provider Health</p>
+          <ul id="provider-health" class="mini-list"></ul>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="hero" id="overview">
+          <div>
+            <p class="eyebrow">MVP Surface</p>
+            <h1>Ingress, normalize, route, approve, push back out.</h1>
+            <p class="hero-copy">
+              FlavorOS turns inbound messages and events into shared operating state,
+              agent work, visible approvals, and source-correct outbound actions.
+            </p>
+            <div class="hero-actions">
+              <button id="sample-ingest-button" type="button">Ingest Sample Gmail</button>
+              <span id="sample-ingest-status" class="meta"></span>
+            </div>
+          </div>
+          <div class="hero-metrics" id="hero-metrics"></div>
+        </section>
+
+        <section class="panel-grid">
+          <article class="panel" id="inbox">
+            <div class="panel-header">
+              <h2>Normalized Inbox</h2>
+              <span id="inbox-count" class="chip"></span>
+            </div>
+            <div id="inbox-list" class="stack"></div>
+          </article>
+
+          <article class="panel" id="work-orders">
+            <div class="panel-header">
+              <h2>Active Work Orders</h2>
+              <span id="work-order-count" class="chip"></span>
+            </div>
+            <div id="work-order-list" class="stack"></div>
+          </article>
+
+          <article class="panel" id="approvals">
+            <div class="panel-header">
+              <h2>Pending Approvals</h2>
+              <span id="approval-count" class="chip chip-warn"></span>
+            </div>
+            <div id="approval-list" class="stack"></div>
+          </article>
+
+          <article class="panel" id="outbound">
+            <div class="panel-header">
+              <h2>Outbound Actions</h2>
+              <span id="outbound-count" class="chip"></span>
+            </div>
+            <div id="outbound-list" class="stack"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
